@@ -4,7 +4,8 @@
   "description": "creates ispy server",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "ws": "^3.3.1"
   },
   "devDependencies": {},
   "scripts": {
