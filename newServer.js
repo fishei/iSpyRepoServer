@@ -2,8 +2,8 @@
 const 	 https = require('https')
 	,WebSocketServer = require('ws').Server
 	,fs = require('fs')
-	,app = express()
 	,express = require('express')
+	,app = express()
 	,sslPort = 443
 	,ptPort = 80
 	,http = require('http')
@@ -26,7 +26,7 @@ var sslServer = https.createServer(sslopt,app).listen(sslPort);
 */
 
 
-var wss = new WebSocketServer({server: sslSrv});
+var wss = new WebSocketServer({server: sslServer});
 console.log("WebSocketServer started");
 
 /** successful connection */
