@@ -2,6 +2,7 @@
 var localVideo = null
 	,peerConnection = null
 	,localVideoStream = null
+	,startButton = null
 	,wsc = new WebSocket('wss://ispyrevolution.com/websocket/')
 	,peerConnectionConfig = {'iceServers': 
        [{'url': 'stun:stun.services.mozilla.com'}
@@ -34,6 +35,7 @@ wsc.onmessage = function(evt){
 
 function startStreaming(){
 	// to do: move getUserMedia options to "static variable" at top of page
+	startButton.addAttribute("disabled");
 	peerConnection = new RTCPeerConnection(peerConnectionConfig);
 	peerConnection.onicecandidate = onIceCandidateHandler;
 	navigator.getUserMedia({"audio": false, "video": true}, function(stream){
