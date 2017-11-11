@@ -1,0 +1,24 @@
+{
+  "name": "ispysvr",
+  "version": "1.0.0",
+  "description": "creates ispy server",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fishei/iSpyRepoServer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fishei/iSpyRepoServer/issues"
+  },
+  "homepage": "https://github.com/fishei/iSpyRepoServer#readme"
+}
