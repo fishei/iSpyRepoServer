@@ -42,17 +42,17 @@ wss.on('connection', function (client) {
   client.on('message', function (message) {
     console.log('Received message from client');
     /** broadcast message to all clients */
-    wss.broadcast(message, client);
+    broadcast(message, client, wss.clients);
   });
 });
 
 // broadcasting the message to all WebSocket clients.
-wss.broadcast = function (data, exclude) {
-  var i = 0, n = this.clients ? this.clients.length : 0, client = null;
+var broadcast = function (data, exclude, clients) {
+  var i = 0, n = clients ? clients.length : 0, client = null;
   if (n < 1) return;
   console.log("Broadcasting message to all " + n + " WebSocket clients.");
   for (; i < n; i++) {
-    client = this.clients[i];
+    client = clients[i];
     // don't send the message to the sender...
     if (client === exclude) continue;
     if (client.readyState === client.OPEN){
