@@ -35,6 +35,7 @@ wsc.onmessage = function(evt){
 	if(signal.sdp){
 		console.log("Received SDP from remote peer.");
 		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
+	}
 	peerConnection.createAnswer(
 		function(answer){
 			var ans = new RTCSessionDescription(answer);
