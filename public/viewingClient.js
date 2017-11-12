@@ -12,6 +12,7 @@ function pageReady(){
 	peerConnection = new RTCPeerConnection(peerConnectionConfig);
 	peerConnection.onicecandidate = onIceCandidateHandler;
 	peerConnection.onaddstream = onAddStreamHandler;
+	wsc.onopen = createAndSendOffer;
 };
 
 function createAndSendOffer(){
