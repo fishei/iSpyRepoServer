@@ -36,17 +36,10 @@ wsc.onmessage = function(evt){
 		console.log("Received SDP from remote peer.");
 		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
 	}
-	peerConnection.createAnswer(
-		function(answer){
-			var ans = new RTCSessionDescription(answer);
-			peerConnection.setLocalDescription(ans, function(){
-					wsc.send(JSON.stringify({"sdp": ans}));
-				},
-				function(error){console.log(error);}
-			);
-		},
-		function(error){console.log(error);}
-	);
+	else if (signal.candidate) {
+		console.log("Received ICECandidate from remote peer.");
+		peerConn.addIceCandidate(new RTCIceCandidate(signal.candidate));
+	}
 };
 
 function onIceCandidateHandler(evt) {
