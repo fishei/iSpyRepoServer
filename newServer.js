@@ -32,7 +32,7 @@ var webSocketServerOpts = {
 */
 
 
-var wss = new WebSocketServer({server: sslServer});
+var wss = new WebSocketServer(webSocketServerOpts);
 console.log("WebSocketServer started");
 
 /** successful connection */
