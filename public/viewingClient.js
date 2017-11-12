@@ -31,6 +31,10 @@ function createAndSendOffer(){
 };
 
 wsc.onmessage = function(evt){
+	var signal = JSON.parse(evt.data);
+	if(signal.sdp){
+		console.log("Received SDP from remote peer.");
+		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
 	peerConnection.createAnswer(
 		function(answer){
 			var ans = new RTCSessionDescription(answer);
