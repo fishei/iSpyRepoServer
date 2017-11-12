@@ -14,6 +14,21 @@ function pageReady(){
 	peerConnection.onaddstream = onAddStreamHandler;
 };
 
+function createAndSendOffer(){
+	peerConnection.createOffer(
+		function(offer){
+			var off = new RTCSessionDescription(offer);
+			peerConnection.setLocalDescription(new RTCSessionDescription(off),
+				function(){
+					wsc.send(JSON.stringify({"sdp":off}));
+				},
+				function(error){console.log(error);}
+			);
+		},
+		function(error){console.log(error);}
+	);
+};
+
 wsc.onmessage = function(evt){
 	peerConnection.createAnswer(
 		function(answer){
