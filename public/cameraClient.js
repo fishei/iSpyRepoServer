@@ -24,7 +24,10 @@ function pageReady(){
 
 	// set up event handler to handle messages from signaling svr
 wsc.onmessage = function(evt){
-	console.log('received message:' + evt);
+	console.log('received message');
+	if(!peerConnection) {
+		return;
+	}
 	var signal = JSON.parse(evt.data);
 	if(signal.sdp){
 		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
@@ -45,17 +48,16 @@ function startStreaming(){
 		localVideoStream = stream;
 		localVideo.src = URL.createObjectURL(localVideoStream);
 		peerConnection.addStream(localVideoStream);
-		createAndSendOffer();
 	}, function(error){console.log(error);});
 };
 
-function createAndSendOffer(){
-	peerConnection.createOffer(
-		function(offer){
-			var off = new RTCSessionDescription(offer);
-			peerConnection.setLocalDescription(new RTCSessionDescription(off), 
+function createAndSendAnswer(){
+	peerConnection.createAnswer(
+		function(answer){
+			var ans = new RTCSessionDescription(answer);
+			peerConnection.setLocalDescription(new RTCSessionDescription(ans), 
 				function(){
-					wsc.send(JSON.stringify({"sdp":off}));
+					wsc.send(JSON.stringify({"sdp":ans}));
 				},
 				function(error){console.log(error);}
 			);
