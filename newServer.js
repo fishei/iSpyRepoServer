@@ -34,6 +34,7 @@ wss.on('connection', function (client) {
   console.log("A new WebSocket client was connected.");
   /** incomming message */
   client.on('message', function (message) {
+    console.log('Received message from client');
     /** broadcast message to all clients */
     wss.broadcast(message, client);
   });
@@ -48,7 +49,10 @@ wss.broadcast = function (data, exclude) {
     client = this.clients[i];
     // don't send the message to the sender...
     if (client === exclude) continue;
-    if (client.readyState === client.OPEN) client.send(data);
+    if (client.readyState === client.OPEN){
+         console.log('sending message to client');
+	 client.send(data);
+    }
     else console.error('Error: the client state is ' + client.readyState);
   }
 };

@@ -1,5 +1,5 @@
 
-var localVideo = null
+var 	localVideo = null
 	,peerConnection = null
 	,localVideoStream = null
 	,startButton = null
@@ -12,7 +12,7 @@ var localVideo = null
 function pageReady(){
 	startButton = document.getElementById('startButton');
 	localVideo = document.getElementById('localVideo');
-	
+
 	// check that the browser supports webRTC
 	if(navigator.getUserMedia){
 		startButton.addEventListener("click", startStreaming);
@@ -24,6 +24,7 @@ function pageReady(){
 
 	// set up event handler to handle messages from signaling svr
 wsc.onmessage = function(evt){
+	console.log('received message:' + evt);
 	var signal = JSON.parse(evt.data);
 	if(signal.sdp){
 		peerConnection.setRemoteDesription(new RTCSessionDescription(signal.sdp));
@@ -35,10 +36,11 @@ wsc.onmessage = function(evt){
 
 function startStreaming(){
 	// to do: move getUserMedia options to "static variable" at top of page
-	startButton.addAttribute("disabled");
+	console.log('starting stream upload');
 	peerConnection = new RTCPeerConnection(peerConnectionConfig);
 	peerConnection.onicecandidate = onIceCandidateHandler;
 	navigator.getUserMedia({"audio": false, "video": true}, function(stream){
+		console.log('retrieved local video stream');
 		localVideoStream = stream;
 		localVideo.src = URL.createObjectURL(localVideoStream);
 		peerConnection.addStream(localVideoStream);
@@ -66,8 +68,3 @@ function onIceCandidateHandler(evt) {
   wsc.send(JSON.stringify({"candidate": evt.candidate }));
 };
 
-
-	
-		
-
-	
