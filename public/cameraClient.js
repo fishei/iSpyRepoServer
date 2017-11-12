@@ -2,6 +2,7 @@
 var 	localVideo = null
 	,peerConnection = null
 	,localVideoStream = null
+	,hasSentAnswer = false
 	,startButton = null
 	,wsc = new WebSocket('wss://ispyrevolution.com/websocket/')
 	,peerConnectionConfig = {'iceServers': 
@@ -28,6 +29,7 @@ wsc.onmessage = function(evt){
 	if(!peerConnection) {
 		return;
 	}
+	if(!hasSentAnswer) createAndSendAnswer();
 	var signal = JSON.parse(evt.data);
 	if(signal.sdp){
 		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
