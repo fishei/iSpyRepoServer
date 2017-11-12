@@ -36,7 +36,11 @@ wsc.onmessage = function(evt){
 
 function startStreaming(){
 	// to do: move getUserMedia options to "static variable" at top of page
+<<<<<<< HEAD
 	console.log('starting stream upload');
+=======
+	//startButton.addAttribute("disabled");
+>>>>>>> 214a1d615e8e6722741eb299bbb6335f2ba62f56
 	peerConnection = new RTCPeerConnection(peerConnectionConfig);
 	peerConnection.onicecandidate = onIceCandidateHandler;
 	navigator.getUserMedia({"audio": false, "video": true}, function(stream){
