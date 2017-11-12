@@ -14,9 +14,15 @@ var sslopt = {
 	ca: fs.readFileSync('keys/ca_bundle.crt')
 };
 
+
 app.use(express.static('public'));
 
 var sslServer = https.createServer(sslopt,app).listen(sslPort);
+
+var webSocketServerOpts = {
+	server: sslServer,
+	clientTracking: true
+}
 
 /*
 	uncomment to run server on localhost without an ssl
