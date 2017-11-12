@@ -31,9 +31,11 @@ wsc.onmessage = function(evt){
 	}
 	var signal = JSON.parse(evt.data);
 	if(signal.sdp){
+		console.log('received SDP from remote peer');
 		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
 	}
 	else if(signal.candidate){
+		console.log("Received ICECandidate from remote peer.");
 		peerConnection.addIceCandidate(new RTCIceCandidate(signal.candidate));
 	}
 	if(!hasSentAnswer) createAndSendAnswer();
@@ -51,6 +53,7 @@ function startStreaming(){
 		localVideo.src = URL.createObjectURL(localVideoStream);
 		peerConnection.addStream(localVideoStream);
 	}, function(error){console.log(error);});
+		console.log('added local video stream');
 };
 
 function createAndSendAnswer(){
