@@ -29,7 +29,6 @@ wsc.onmessage = function(evt){
 	if(!peerConnection) {
 		return;
 	}
-	if(!hasSentAnswer) createAndSendAnswer();
 	var signal = JSON.parse(evt.data);
 	if(signal.sdp){
 		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
@@ -37,6 +36,7 @@ wsc.onmessage = function(evt){
 	else if(signal.candidate){
 		peerConnection.addIceCandidate(new RTCIceCandidate(signal.candidate));
 	}
+	if(!hasSentAnswer) createAndSendAnswer();
 };
 
 function startStreaming(){
@@ -66,6 +66,7 @@ function createAndSendAnswer(){
 		},
 		function(error){console.log(error);}
 	);
+	hasSentAnswer = true;
 };
 
 function onIceCandidateHandler(evt) {
