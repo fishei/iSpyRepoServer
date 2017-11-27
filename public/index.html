@@ -1,40 +1,46 @@
-<!DOCTYPE html>
-<!--
- *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
- *
- *  Use of this source code is governed by a BSD-style license
- *  that can be found in the LICENSE file in the root of the source
- *  tree.
--->
-<html>
-<head>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
-  <meta charset="utf-8">
-  <meta name="description" content="WebRTC code samples">
-  <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
-  <meta itemprop="description" content="Client-side WebRTC code samples">
-  <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
-  <meta itemprop="name" content="WebRTC code samples">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta id="theme-color" name="theme-color" content="#ffffff">
 
-  <base target="_blank">
-  <link rel="stylesheet" href="main.css">
+          <!-- todo- put in relevant icons for this-->
 
-</head>
-
-<body>
-
-  <div id="container">
-
-<video id="gum-local" autoplay playsinline></video>
-
-    <div id="errorMsg"></div>
-  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
-  <script src="./common.js"></script>
-  <script src="./main.js"></script>
-
-  <script src="./ga.js"></script>
-
-</body>
-</html>
+        <section class="panel b-blue" id="1">
+          <article class="panel__wrapper">
+            <div class="panel__content">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-8 col-md-offset-2">
+                    <div class="home-content">
+                      <div class="home-heading">
+                        <h1><em>iSpy</em></h1>
+                      </div>
+                      <div class="row">
+                          <div class="home-box-content">
+                            <div class="left-text">
+                              <h4>What would you like to do?</h4>
+                              <button onclick="window.location.href='/viewingClient.html'">
+                                <a href="#2">View video feed</a>
+                              </button>
+                              <button onclick="window.location.href='/cameraClient.html'">
+                                <a href="#2">Set up new camera feed</a>
+                              </button>
+                            </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
