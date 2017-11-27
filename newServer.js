@@ -8,17 +8,19 @@ const 	 https = require('https')
 	,ptPort = 80
 	,http = require('http')
 
+// load certificate and key files for ssl
 var sslopt = {
 	key:fs.readFileSync('keys/private.key'),
 	cert: fs.readFileSync('keys/certificate.crt'),
 	ca: fs.readFileSync('keys/ca_bundle.crt')
 };
 
-
+// serve content from the public directory
 app.use(express.static('public'));
 
 var sslServer = https.createServer(sslopt,app).listen(sslPort);
 
+//options for web socket server
 var webSocketServerOpts = {
 	server: sslServer,
 	clientTracking: true
@@ -31,7 +33,7 @@ var webSocketServerOpts = {
 	var ptServer = http.createServer(app).listen(ptPort);
 */
 
-
+// create web socket server to relay signaling messages between webrtc peers
 var wss = new WebSocketServer(webSocketServerOpts);
 console.log("WebSocketServer started");
 
