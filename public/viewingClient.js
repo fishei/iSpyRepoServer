@@ -47,8 +47,10 @@ wsc.onmessage = function(evt){
 };
 
 function onIceCandidateHandler(evt) {
-	if (!evt || !evt.candidate) return;
-	wsc.send(JSON.stringify({"candidate": evt.candidate }));
+  console.log('received ice candidate');
+  if (!evt || !evt.candidate) return;
+  console.log('sending ice candidate to remote peer');
+  wsc.send(JSON.stringify({"candidate": evt.candidate }));
 };
 
 function onAddStreamHandler(evt) { 
