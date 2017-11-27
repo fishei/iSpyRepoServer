@@ -75,7 +75,9 @@ function createAndSendAnswer(){
 };
 
 function onIceCandidateHandler(evt) {
+  console.log('received ice candidate');
   if (!evt || !evt.candidate) return;
+  console.log('sending ice candidate to remote peer');
   wsc.send(JSON.stringify({"candidate": evt.candidate }));
 };
 
