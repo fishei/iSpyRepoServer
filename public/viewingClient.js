@@ -3,9 +3,7 @@ var remoteVideo = null
 	,remoteVideoStream = null
 	,wsc = new WebSocket('wss://ispyrevolution.com/websocket/')
 	,peerConnectionConfig = {'iceServers': 
-       [{'url': 'stun:stun.services.mozilla.com'}
-		, {'url': 'stun:stun.l.google.com:19302'}
-		, {	'url': 'turn:ispyrevolution.com'
+       [{	'url': 'turn:ispyrevolution.com'
 		  	  ,'username': 'root'
 			  ,'credential': 'a0ec22b8d37003895df189a49af2ac35'
 		  }
