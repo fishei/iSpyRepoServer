@@ -1,5 +1,3 @@
-module.exports = {
-
 function ClientConnection(newGroupId, newParent, newWebSock){
 	var groupId = newGroupId;
 	var parent = newParent;
@@ -20,7 +18,10 @@ function ClientConnection(newGroupId, newParent, newWebSock){
 	this.sendMessage = function(message){
 		webSock.send(message);
 	};
-}
+};
+
 ClientConnection.prototype.onMessage = function(message){
 	parent.onMessage(message, this.isCamera());
 };
+
+module.exports = ClientConnection;

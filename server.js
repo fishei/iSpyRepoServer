@@ -7,7 +7,7 @@ const
 	,sslPort = 443
 	,ptPort = 80
 	,http = require('http')
-	,CameraGroup = require('CameraGroup.js')
+	,CameraGroup = require('./CameraGroup')
 
 var sslopt = {
 	key:	fs.readFileSync('keys/private.key'),
@@ -41,7 +41,8 @@ wss.on('connection', function (client) {
   	console.log("A new WebSocket client was connected.");
   	/** incomming message */
   	client.on('message', function (message) {
-   	onFirstClientMessage(message, client);
+		console.log('received message');
+   		onFirstClientMessage(message, client);
   	});
 });
 
@@ -61,7 +62,7 @@ var connectCamera = function(groupId, client){
 };
 
 var connectViewer = function(groupId, client){
-	if(cameraGroups.has(groupId)
+	if(cameraGroups.has(groupId))
 		cameraGroups.get(groupId).addViewer(client);
 	else
 		sendErrorToClient(client, ' camera group with id: ' + groupId + ' does not exist');
@@ -72,4 +73,4 @@ var onFirstClientMessage = function(message, client){
 	if(!message.groupId || !message.clientType) invalidMesage(client);
 	else if(message.clientType == 'camera') connectCamera(message.groupId, client);
 	else if(message.clientType == 'viewer') connectViewer(message.groupId, client);
-}
+};

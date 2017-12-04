@@ -20,7 +20,7 @@ function pageReady(){
 
 	// check that the browser supports webRTC
 	if(navigator.getUserMedia){
-		startButton.addEventListener("click", startStreaming);
+		startButton.addEventListener("click", tryConnectToServer);
 	}
 	else{
 		alert("getUserMedia failure, your browser may not support webRTC");

@@ -1,5 +1,5 @@
-var CameraConnection = require('CameraConnection.js');
-var ViewingConnection = require('ViewingConnection.js');
+var CameraConnection = require('./CameraConnection.js');
+var ViewingConnection = require('./ViewingConnection.js');
 
 function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
