@@ -28,7 +28,6 @@ function CameraGroup(newGroupId, cameraSock){
 		});
 	};
 	
-	
 	this.onViewerMessage = function(message){
 		console.log(this.description() + ' received message from viewing client');
 		console.log(this.description() + ' sending message to camera client');
@@ -39,4 +38,6 @@ function CameraGroup(newGroupId, cameraSock){
 		if(isCamera) onCameraMessage(message);
 		else onViewerMessage(message);
 	};
-}
+};
+
+module.exports = CameraGroup;

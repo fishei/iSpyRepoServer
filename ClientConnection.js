@@ -1,4 +1,4 @@
-
+module.exports = {
 
 function ClientConnection(newGroupId, newParent, newWebSock){
 	var groupId = newGroupId;
@@ -21,18 +21,6 @@ function ClientConnection(newGroupId, newParent, newWebSock){
 		webSock.send(message);
 	};
 }
-
 ClientConnection.prototype.onMessage = function(message){
 	parent.onMessage(message, this.isCamera());
 };
-
-function CameraClient(newGroupId, newParent, newWebSock){
-	ClientConnection.call(this,newGroupId, newParent, newWebSock);
-};
-
-CameraClient.prototype = Object.create(CameraConnection.prototype);
-CameraClient.prototype.constructor = CameraClient;
-
-CameraClient.prototype.isCamera = function(){
-	return true;
-}
