@@ -10,6 +10,10 @@
 
 var errorElement = document.querySelector('#errorMsg');
 var video = document.querySelector('video');
+var recordRTC;
+var stopButton;
+
+//var RecordRTC = require('recordrtc');
 
 // Put variables in global scope to make them available to the browser console.
 var constraints = window.constraints = {
@@ -26,7 +30,39 @@ function handleSuccess(stream) {
   };
   window.stream = stream; // make variable available to browser console
   video.srcObject = stream;
+  
+  record(stream)
+  
+};
+
+function record(stream) {
+	var recordRTCOptions = {
+	type: 'video',
+    recorderType: 'MediaStreamRecorder',
+    mimeType: 'video/webm\;codecs=vp9',
+  };
+  
+  recordRTC = new MRecordRTC(stream, recordRTCOptions);
+  recordRTC.startRecording();
+  
+  stopButton = document.getElementById('stopButton');
+  stopButton.addEventListener("click", clearAndStop);  
+  console.log(recordRTC);
 }
+
+function clearAndStop() {
+	// stop recording function & clear timer
+	recordRTC.stopRecording(function(){
+		var blob = recordRTC.getBlob();
+		console.log(blob);
+		recordRTC.save({
+			audio: 'audioFile',
+			video: 'videoFile'
+		});
+	});
+};
+
+
 
 function handleError(error) {
   if (error.name === 'ConstraintNotSatisfiedError') {
@@ -38,14 +74,14 @@ function handleError(error) {
       'order for the demo to work.');
   }
   errorMsg('getUserMedia error: ' + error.name, error);
-}
+};
 
 function errorMsg(msg, error) {
   errorElement.innerHTML += '<p>' + msg + '</p>';
   if (typeof error !== 'undefined') {
     console.error(error);
   }
-}
+};
 
 navigator.mediaDevices.getUserMedia(constraints).
     then(handleSuccess).catch(handleError);
