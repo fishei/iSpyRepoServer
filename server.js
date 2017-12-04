@@ -54,7 +54,7 @@ var invalidMessage = function(client){
 };
 
 var connectCamera = function(groupId, client){
-	if(cameraGroups.has(groupId) sendErrorToClient(client, ' camera group with id: ' + groupId + ' already exists');
+	if(cameraGroups.has(groupId)) sendErrorToClient(client, ' camera group with id: ' + groupId + ' already exists');
 	else{
 		cameraGroups.set(groupId, new CameraGroup(groupId, client));
 	}
