@@ -27,8 +27,10 @@ function pageReady(){
 	}
 };
 
+
+
 	// set up event handler to handle messages from signaling svr
-wsc.onmessage = function(evt){
+onMessageWhileStreaming = function(evt){
 	console.log('received message');
 	if(!peerConnection) {
 		return;
@@ -45,7 +47,23 @@ wsc.onmessage = function(evt){
 	if(!hasSentAnswer) createAndSendAnswer();
 };
 
+onInitialMessage = function(evt){
+	console.log('received initial repsonse message from server');
+	var signal = JSON.parse(evt.data);
+	if(signal.connected) startStreaming();
+	else if(message.error) alert(error);
+	else alert('invalid server response');
+};
+
+function tryConnectToServer(){
+	groupIdBox = document.getElementById('connectionBox');
+	groupIdString = groupIdBox.value;
+	console.log('attempting to connect camera with groupId: ' + groupIdString);
+	
+};
+
 function startStreaming(){
+	wsc.onmessage = onMessageWhileStreaming;
 	// to do: move getUserMedia options to "static variable" at top of page
 	console.log('starting stream upload');
 	//startButton.addAttribute("disabled");

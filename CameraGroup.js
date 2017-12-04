@@ -1,4 +1,5 @@
-
+var CameraConnection = require('CameraConnection.js');
+var ViewingConnection = require('ViewingConnection.js');
 
 function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
@@ -6,6 +7,7 @@ function CameraGroup(newGroupId, cameraSock){
 
 	// ClientConnection object representing the camera uploading video
 	var cameraClient = new CameraClient(groupId,this,cameraSock);
+	cameraClient.send({connected: true});
 
 	this.addViewer = function(viewerSock){
 		console.log('New viewing client added to ' + this.description());
