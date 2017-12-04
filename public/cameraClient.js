@@ -59,7 +59,8 @@ function tryConnectToServer(){
 	groupIdBox = document.getElementById('connectionBox');
 	groupIdString = groupIdBox.value;
 	console.log('attempting to connect camera with groupId: ' + groupIdString);
-	
+	wsc.onmessage = onInitialMessage;
+	wsc.send(JSON.stringify({"clientType": "camera","groupId": groupIdString);
 };
 
 function startStreaming(){
