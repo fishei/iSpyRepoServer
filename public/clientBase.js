@@ -1,10 +1,10 @@
 
 function ClientBase(){
-	this.localVideo = null
-	this.startButton = null
-	this.stopButton = null
-	this.groupIdBox = null
-	this.wsc = new WebSocket('wss://ispyrevolution.com/websocket/')
+	this.localVideo = null;
+	this.startButton = null;
+	this.stopButton = null;
+	this.groupIdBox = null;
+	this.wsc = new WebSocket('wss://ispyrevolution.com/websocket/');
 	this.peerConnectionConfig = {'iceServers': [
 		  {'url': 'stun:stun.services.mozilla.com'}
 		, {'url': 'stun:stun.l.google.com:19302'}
@@ -13,13 +13,17 @@ function ClientBase(){
 			 	,'credential': 'a0ec22b8d37003895df189a49af2ac35'
 		  }
 	]};
+	console.log(this.wsc);
 	
 	this.connectToGroup = function(groupId){
+		console.log(this);
 		groupIdBox = document.getElementById('connectionBox');
 		groupIdString = groupIdBox.value;
 		console.log('attempting to connect camera with groupId: ' + groupIdString);
-		wsc.onmessage = onInitialMessage;
-		wsc.send(JSON.stringify({"clientType": getClientType(),"groupId": groupIdString}));
+		if(this.wsc == null) console.log("NULL!!!!!");
+		console.log(this.wsc);
+		this.wsc.onmessage = this.onInitialMessage;
+		this.wsc.send(JSON.stringify({"clientType": getClientType(),"groupId": groupIdString}));
 	};
 
 	this.onConnectionFailure = function(err){
@@ -29,10 +33,10 @@ function ClientBase(){
 	};
 
 	this.resetUIElements = function(){
-		startbutton.enabled = true;
-		stopbutton.enabled = false;
-		groupIdBox.value = '';
-		localVideo.src = null;
+		this.startbutton.enabled = true;
+		this.stopbutton.enabled = false;
+		this.groupIdBox.value = '';
+		this.localVideo.src = null;
 	};
 
 	this.onInitialMessage = function(message){
@@ -62,26 +66,29 @@ function ClientBase(){
 	//disconnect message received
 	this.onDisconnectMessage = function(message){};
 	
-	this.pageReady() = function(){
-		startButton = document.getElementById('startButton');
-		localVideo = document.getElementById('localVideo');
-		startButton.addEventListener('click', this.connectToGroup);
+	this.pageReady = function(){
+		this.startButton = document.getElementById('startButton');
+		this.localVideo = document.getElementById('localVideo');
+		self = this;
+		this.startButton.addEventListener('click', function(){
+			self.connectToGroup();
+		});
 	};
 
 	this.localDisconnect = function(){
-		wsc.send(JSON.stringify({"disconnect":"true"});
-		resetUIElements();
-		wsc.onmessage = this.onMessageWhileUnconnected;
+		this.wsc.send(JSON.stringify({"disconnect":"true"}));
+		this.resetUIElements();
+		this.wsc.onmessage = this.onMessageWhileUnconnected;
 	};
 
 	this.disconnectReceived = function(message){};
 
 	this.onPageExit = function(evt){
-		localDisconnect();
+		this.localDisconnect();
 	};
 
 	this.onAckReceived = function(signal){
-		wsc.onmessage = this.onMessage();
+		this.wsc.onmessage = this.onMessage();
 		window.addEventListener('beforeunload',onPageExit,false);
 	};
 

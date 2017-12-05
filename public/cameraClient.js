@@ -1,108 +1,88 @@
 
-var localVideo = null
-	,peerConnection = null
-	,localVideoStream = null
-	,hasSentAnswer = false
-	,startButton = null
-	,wsc = new WebSocket('wss://ispyrevolution.com/websocket/')
-	,peerConnectionConfig = {'iceServers': 
-       [{'url': 'stun:stun.services.mozilla.com'}
-		, {'url': 'stun:stun.l.google.com:19302'}
-		, {	'url': 'turn:ispyrevolution.com'
-		  	  ,'username': 'root'
-			  ,'credential': 'a0ec22b8d37003895df189a49af2ac35'
-		  }
-	]};
+function CameraClient(){
+	ClientBase.call(this);
 
-function pageReady(){
-	startButton = document.getElementById('startButton');
-	localVideo = document.getElementById('localVideo');
+	this.viewingPeers = new Map();
 
-	// check that the browser supports webRTC
-	if(navigator.getUserMedia){
-		startButton.addEventListener("click", tryConnectToServer);
-	}
-	else{
-		alert("getUserMedia failure, your browser may not support webRTC");
-	}
+	this.localVideoStream = null;
+
+	this.buildPeerConnection = function(i){
+		var peerConn = new RTCPeerConnection(this.peerConnectionConfig);
+		peerConn.onicecandidate = function(evt){
+			console.log('received ice candidate for connection ' + i);
+			if(!evt || !evt.candidate) return;
+			wsc.send(JSON.stringify({
+				"candidate": evt.candidate, 
+				"viewerId":i
+			}));
+		};
+		peerConn.addStream(localVideoStream);
+	};
+
+	/* create RTCPeerConnection for viewer i if it does not exist
+		return the RTCPeerConnection for viewer i */
+
+	this.getPeerConnection = function(i){
+		if(!viewingPeers.has(i))
+			viewingPeers.set(i,buildPeerConnection(i));
+		return viewingPeers.get(i);
+	};
+
+	this.checkMessageForId = function(){
+			if(!message.viewerId){
+				console.log('invalid message: no viewer id ' + message);
+				return false;
+			}
+		return true;
+	};
 };
 
+CameraClient.prototype = Object.create(ClientBase.prototype);
+CameraClient.constructor = CameraClient;
 
-
-	// set up event handler to handle messages from signaling svr
-onMessageWhileStreaming = function(evt){
-	console.log('received message');
-	if(!peerConnection) {
-		return;
-	}
-	var signal = JSON.parse(evt.data);
-	if(signal.sdp){
-		console.log('received SDP from remote peer');
-		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
-	}
-	else if(signal.candidate){
-		console.log("Received ICECandidate from remote peer.");
-		peerConnection.addIceCandidate(new RTCIceCandidate(signal.candidate));
-	}
-	if(!hasSentAnswer) createAndSendAnswer();
+CameraClient.prototype.resetUIElements = function(){
+	startbutton.enabled = true;
+	stopbutton.enabled = false;
+	groupIdBox.value = '';
 };
 
-onInitialMessage = function(evt){
-	console.log('received initial repsonse message from server');
-	var signal = JSON.parse(evt.data);
-	if(signal.connected) startStreaming();
-	else if(signal.error) alert(signal.error);
-	else alert('invalid server response');
-};
-
-function tryConnectToServer(){
-	groupIdBox = document.getElementById('connectionBox');
-	groupIdString = groupIdBox.value;
-	console.log('attempting to connect camera with groupId: ' + groupIdString);
-	wsc.onmessage = onInitialMessage;
-	wsc.send(JSON.stringify({"clientType": "camera","groupId": groupIdString}));
-};
-
-function startStreaming(){
-	wsc.onmessage = onMessageWhileStreaming;
-	// to do: move getUserMedia options to "static variable" at top of page
-	console.log('starting stream upload');
-	//startButton.addAttribute("disabled");
-	peerConnection = new RTCPeerConnection(peerConnectionConfig);
-	peerConnection.onicecandidate = onIceCandidateHandler;
-	navigator.getUserMedia({"audio": false, "video": true}, function(stream){
-		console.log('retrieved local video stream');
-		localVideoStream = stream;
-		localVideo.src = URL.createObjectURL(localVideoStream);
-		peerConnection.addStream(localVideoStream);
-	}, function(error){console.log(error);});
-		console.log('added local video stream');
-};
-
-function createAndSendAnswer(){
-	peerConnection.createAnswer(
-		function(answer){
-			var ans = new RTCSessionDescription(answer);
-			peerConnection.setLocalDescription(new RTCSessionDescription(ans), 
-				function(){
-					wsc.send(JSON.stringify({"sdp":ans}));
-				},
-				function(error){console.log(error);}
-			);
+CameraClient.prototype.pageReady = function(){
+	navigator.getUserMedia(
+		{"audio":false,"video":true},
+		function(stream){
+			console.log('retrieved local video stream');
+			localVideoStream = stream;
+			ClientBase.prototype.pageReady.call(this);
+			localVideo.src = URL.createObjectURL(localVideoStream);
 		},
-		function(error){console.log(error);}
+		function(error){
+			console.log(error);
+			alert("your browser may not support webRTC");
+		}
 	);
-	hasSentAnswer = true;
 };
 
-function onIceCandidateHandler(evt) {
-  console.log('received ice candidate');
-  if (!evt || !evt.candidate) return;
-  console.log('sending ice candidate to remote peer');
-  wsc.send(JSON.stringify({"candidate": evt.candidate }));
+CameraClient.prototype.onIceMessage = function(message){
+	if(this.checkMessageForId(message)){
+		console.log('received ICE Candidate from remote peer: ' + message.viewerId);
+		this.getPeerConnection(message.viewerId).addIceCandidate(new RTCIceCandidate(signal.candidate));
+	}
 };
 
+CameraClient.prototype.onSDPMessage = function(message){
+	if(this.checkMessageForId(message)){
+		console.log('received SDP from remote peer: ' + message.viewerId);
+		this.getPeerConnection(message.viewerId).setRemoteDescription(new RTCSessionDescription(signal.sdp));
+		this.createAndSendAnswer(message.viewerId);
+	}
+};
 
-window.addEventListener("beforeunload", function(e){
-   console.log("Test");
-}, false);
+CameraClient.onDisconnectMessage = function(message){
+	if(this.checkMessageForId(message)){
+		getPeerConnection(message.viewerId).close();
+	}
+};
+
+	
+
+

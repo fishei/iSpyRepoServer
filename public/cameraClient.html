@@ -6,6 +6,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <html>
   <head>
+    <script src="clientBase.js"></script>
     <script src="cameraClient.js"></script>
     <title>Camera Feed Upload</title>
   </head>
@@ -28,7 +29,12 @@
     		<button type="button" class="btn btn-warning btn-lg disabled">Disconnect</button>
     	</div>
     </div>
-    <script>window.addEventListener("load", pageReady);</script>
+   <script>
+	$(document).ready(function(){
+		var client = new CameraClient();
+		client.pageReady();	
+	});
+   </script>
   
 
 </body>
