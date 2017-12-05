@@ -58,4 +58,6 @@ function onAddStreamHandler(evt) {
 	remoteVideo.src = URL.createObjectURL(evt.stream);
 };
 
-
+window.addEventListener("beforeunload", function(e){
+   console.log("Test");
+}, false);
