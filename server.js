@@ -69,8 +69,11 @@ var connectViewer = function(groupId, client){
 };
 
 var onFirstClientMessage = function(message, client){
+	var signal = JSON.parse(message);
+	console.log(signal);
+	console.log(message);
 	console.log('Initial message received from client');
-	if(!message.groupId || !message.clientType) invalidMesage(client);
+	if(!message.groupId || !message.clientType) invalidMessage(client);
 	else if(message.clientType == 'camera') connectCamera(message.groupId, client);
 	else if(message.clientType == 'viewer') connectViewer(message.groupId, client);
 };
