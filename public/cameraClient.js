@@ -51,7 +51,7 @@ onInitialMessage = function(evt){
 	console.log('received initial repsonse message from server');
 	var signal = JSON.parse(evt.data);
 	if(signal.connected) startStreaming();
-	else if(message.error) alert(error);
+	else if(signal.error) alert(signal.error);
 	else alert('invalid server response');
 };
 

@@ -55,12 +55,13 @@ var invalidMessage = function(client){
 };
 
 var connectCamera = function(groupId, client){
-	if(groupId == ' ' || groupId = '')
+	if(groupId == ' ' || groupId == ''){
 		sendErrorToClient(client, 'invalid groupId');
-	else if(cameraGroups.has(groupId))
+	}else if(cameraGroups.has(groupId)){
 		sendErrorToClient(client, ' camera group with id: ' + groupId + ' already exists');
-	else
+	}else{
 		cameraGroups.set(groupId, new CameraGroup(groupId, client));
+	}
 };
 
 var connectViewer = function(groupId, client){
@@ -72,8 +73,11 @@ var connectViewer = function(groupId, client){
 
 var onFirstClientMessage = function(message, client){
 	console.log('Initial message received from client');
-	if(!message.groupId || !message.clientType) invalidMessage(client);
 	var signal = JSON.parse(message);
+	console.log(signal);
+	console.log(signal.groupId);
+	console.log(signal.clientType);
+	if((!signal.groupId) || (!signal.clientType)) invalidMessage(client);
 	else if(signal.clientType == 'camera') connectCamera(signal.groupId, client);
 	else if(signal.clientType == 'viewer') connectViewer(signal.groupId, client);
 };

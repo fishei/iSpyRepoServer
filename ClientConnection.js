@@ -12,7 +12,7 @@ function ClientConnection(newGroupId, newParent, newWebSock){
 	};
 
 	// add message handler function onMessage
-	webSock.on('message', onMessage);
+	webSock.on('message', this.onMessage);
 
 	// to do: add error handling, check for closed web sockets
 	this.sendMessage = function(message){

@@ -1,4 +1,4 @@
-var ClientConnection = require('./ClientConnection.js');
+var ClientConnection = require('./ClientConnection');
 
 // child class for client connections to cameras
 function CameraConnection(newGroupId, newParent, newWebSock){
@@ -12,3 +12,5 @@ CameraConnection.prototype.constructor = CameraConnection;
 CameraConnection.prototype.isCamera = function(){
 	return true;
 };
+
+module.exports = CameraConnection;

@@ -1,5 +1,5 @@
-var CameraConnection = require('./CameraConnection.js');
-var ViewingConnection = require('./ViewingConnection.js');
+var CameraConnection = require('./CameraConnection');
+var ViewingConnection = require('./ViewingConnection');
 
 function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
@@ -7,12 +7,12 @@ function CameraGroup(newGroupId, cameraSock){
 	var nextViewerId = 0;
 
 	// ClientConnection object representing the camera uploading video
-	var cameraClient = new CameraClient(groupId,this,cameraSock);
-	cameraClient.send({connected: true});
+	var cameraClient = new CameraConnection(groupId,this,cameraSock);
+	cameraClient.sendMessage({connected: true});
 
 	this.addViewer = function(viewerSock){
 		console.log('New viewing client added to ' + this.description());
-		viewingClients.set(nextViewerId, new ViewingClient(groupId, this, viewerSock));
+		viewingClients.set(nextViewerId, new ViewingConnection(groupId, this, viewerSock));
 		console.log('Sending ack message to new viewing client in ' + this.description());
 		viewerSock.send(JSON.stringify({"connected":true, "viewerId": nextViewerId}));
 		nextViewerId++;
@@ -27,7 +27,7 @@ function CameraGroup(newGroupId, cameraSock){
 
 	this.sendMessageToViewer = function(message,viewerId){
 		console.log(this.description() + ' sending message to viewing client ' + viewerId);
-		viewingClients.get(viewerId).send(message);
+		viewingClients.get(viewerId).sendMessage(message);
 	};
 	
 	this.onViewerMessage = function(message){
