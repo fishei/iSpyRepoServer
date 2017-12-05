@@ -1,5 +1,6 @@
 
 function ClientBase(){
+	var self = this;
 	this.localVideo = null;
 	this.startButton = null;
 	this.stopButton = null;
@@ -23,7 +24,7 @@ function ClientBase(){
 		if(this.wsc == null) console.log("NULL!!!!!");
 		console.log(this.wsc);
 		this.wsc.onmessage = this.onInitialMessage;
-		this.wsc.send(JSON.stringify({"clientType": getClientType(),"groupId": groupIdString}));
+		this.wsc.send(JSON.stringify({"clientType": this.getClientType(),"groupId": groupIdString}));
 	};
 
 	this.onConnectionFailure = function(err){
@@ -39,11 +40,12 @@ function ClientBase(){
 		this.localVideo.src = null;
 	};
 
-	this.onInitialMessage = function(message){
+	this.onInitialMessage = function(evt){
+		console.log(this);
 		console.log('received initial response from server');
 		var signal = JSON.parse(evt.data);
-		if(signal.connected) onAckReceived(signal);
-		else if(signal.error) onConnectionFailure(signal.error);
+		if(signal.connected) this.onAckReceived(signal);
+		else if(signal.error) this.onConnectionFailure(signal.error);
 		else this.onConnectionFailure('invalid initial message:' + signal);
 	};
 
@@ -69,7 +71,6 @@ function ClientBase(){
 	this.pageReady = function(){
 		this.startButton = document.getElementById('startButton');
 		this.localVideo = document.getElementById('localVideo');
-		self = this;
 		this.startButton.addEventListener('click', function(){
 			self.connectToGroup();
 		});
@@ -94,6 +95,10 @@ function ClientBase(){
 
 	this.onMessageWhileUnconnected = function(message){
 		console.log('unsolicted message received: ' + message);
+	};
+	
+	this.getClientType = function(){
+		return 'viewer';
 	};
 
 };
