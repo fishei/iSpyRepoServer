@@ -42,6 +42,11 @@ function CameraGroup(newGroupId, cameraSock){
 		if(isCamera) onCameraMessage(signal);
 		else onViewerMessage(signal);
 	};
+
+	this.onDisconnect=function(){
+		delete(viewingClients);
+		delete(this);
+	}
 };
 
 module.exports = CameraGroup;
