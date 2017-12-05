@@ -1,5 +1,7 @@
 var CameraConnection = require('./CameraConnection.js');
 var ViewingConnection = require('./ViewingConnection.js');
+var events=require(events);
+var eventEmitter=new event.EventEmitter();
 
 function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
@@ -43,10 +45,9 @@ function CameraGroup(newGroupId, cameraSock){
 		else onViewerMessage(signal);
 	};
 
-	this.onDisconnect=function(){
-		delete(viewingClients);
-		delete(this);
-	}
+	eventEmitter.on("disconnect", disconnectCameraGroup);
+
+	
 };
 
 module.exports = CameraGroup;
