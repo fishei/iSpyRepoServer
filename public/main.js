@@ -47,9 +47,12 @@ function record(stream, prefixName) {
   recordRTC = new MRecordRTC(stream, recordRTCOptions);
   recordRTC.startRecording();
   
-  stopButton = document.getElementById('stopButton');
-  stopButton.addEventListener("click", clearAndStop);  
-  console.log(recordRTC);
+  //stopButton = document.getElementById('stopButton');
+  //stopButton.addEventListener("click", clearAndStop);  
+  setInterval(function() {
+	  clearAndStop()
+  }, 60*1000);
+  //console.log(recordRTC);
 }
 
 function clearAndStop() {
