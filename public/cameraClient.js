@@ -102,3 +102,7 @@ function onIceCandidateHandler(evt) {
   wsc.send(JSON.stringify({"candidate": evt.candidate }));
 };
 
+
+window.addEventListener("beforeunload", function(e){
+   console.log("Test");
+}, false);
