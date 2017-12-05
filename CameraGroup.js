@@ -1,6 +1,8 @@
 var CameraConnection = require('./CameraConnection.js');
 var ViewingConnection = require('./ViewingConnection.js');
 var events=require(events);
+CameraGroup.prototype=Object.create(EventEmitter.prototype);
+CameraGroup.prototype.constructor=CameraGroup;
 
 function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
