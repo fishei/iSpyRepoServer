@@ -61,6 +61,9 @@ var connectCamera = function(groupId, client){
 		sendErrorToClient(client, ' camera group with id: ' + groupId + ' already exists');
 	}else{
 		cameraGroups.set(groupId, new CameraGroup(groupId, client));
+		cameraGroups.get(groupId).on('discon',function()
+			{console.log('sonny');}
+		);
 	}
 };
 
