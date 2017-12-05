@@ -1,12 +1,13 @@
 var CameraConnection = require('./CameraConnection.js');
 var ViewingConnection = require('./ViewingConnection.js');
 var events=require(events);
-var eventEmitter=new event.EventEmitter();
 
 function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
 	var viewingClients = new Map();
 	var nextViewerId = 0;
+	var eventEmitter=new event.EventEmitter();
+
 
 	// ClientConnection object representing the camera uploading video
 	var cameraClient = new CameraClient(groupId,this,cameraSock);
