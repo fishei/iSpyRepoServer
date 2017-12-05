@@ -12,7 +12,7 @@ var errorElement = document.querySelector('#errorMsg');
 var video = document.querySelector('video');
 var recordRTC;
 var stopButton;
-
+var prefixName = 'alex_';
 //var RecordRTC = require('recordrtc');
 
 // Put variables in global scope to make them available to the browser console.
@@ -30,12 +30,14 @@ function handleSuccess(stream) {
   };
   window.stream = stream; // make variable available to browser console
   video.srcObject = stream;
+  var str1 = "";
   
-  record(stream)
+  console.log(prefixName);
+  record(stream, prefixName);
   
 };
 
-function record(stream) {
+function record(stream, prefixName) {
 	var recordRTCOptions = {
 	type: 'video',
     recorderType: 'MediaStreamRecorder',
@@ -55,10 +57,12 @@ function clearAndStop() {
 	recordRTC.stopRecording(function(){
 		var blob = recordRTC.getBlob();
 		console.log(blob);
+		var fileName = prefixName.concat(Date.now());
 		recordRTC.save({
 			audio: 'audioFile',
-			video: 'videoFile'
+			video: fileName
 		});
+		recordRTC.startRecording();
 	});
 };
 
