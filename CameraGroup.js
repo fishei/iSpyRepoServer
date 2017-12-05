@@ -3,7 +3,8 @@ var ViewingConnection = require('./ViewingConnection.js');
 
 function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
-	var viewingClients = [];
+	var viewingClients = new Map();
+	var nextViewerId = 0;
 
 	// ClientConnection object representing the camera uploading video
 	var cameraClient = new CameraClient(groupId,this,cameraSock);
@@ -11,9 +12,10 @@ function CameraGroup(newGroupId, cameraSock){
 
 	this.addViewer = function(viewerSock){
 		console.log('New viewing client added to ' + this.description());
-		viewingClients.push(new ViewingClient(groupId,this,viewerSock));
+		viewingClients.set(nextViewerId, new ViewingClient(groupId, this, viewerSock));
 		console.log('Sending ack message to new viewing client in ' + this.description());
-		viewerSock.send(JSON.stringify({"connected":true}));
+		viewerSock.send(JSON.stringify({"connected":true, "viewerId": nextViewerId}));
+		nextViewerId++;
 	};
 
 	this.description = function(){ return 'CameraGroup ' + groupId;};
@@ -23,7 +25,7 @@ function CameraGroup(newGroupId, cameraSock){
 		broadcastToViewers(message);
 	};
 
-	this.broadcastToViewers = function(message){
+	this.sendMessageToViewer = function(message){
 		console.log(this.description() + ' broadcasting message to viewers');
 		viewingClients.foreach(function(item,index,array){
 			item.sendMessage(message);
@@ -37,6 +39,7 @@ function CameraGroup(newGroupId, cameraSock){
 	};
 
 	this.onMessage = function(message, isCamera){
+		console.log(message);
 		if(isCamera) onCameraMessage(message);
 		else onViewerMessage(message);
 	};
