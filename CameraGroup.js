@@ -1,9 +1,10 @@
 
 var CameraConnection = require('./CameraConnection');
 var ViewingConnection = require('./ViewingConnection');
-var CameraConnection = require('./CameraConnection.js');
-var ViewingConnection = require('./ViewingConnection.js');
-var events=require(events);
+
+var events=require('events');
+var EventEmitter = events.EventEmitter;
+
 CameraGroup.prototype=Object.create(EventEmitter.prototype);
 CameraGroup.prototype.constructor=CameraGroup;
 
@@ -11,7 +12,6 @@ function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
 	var viewingClients = new Map();
 	var nextViewerId = 0;
-	var eventEmitter=new event.EventEmitter();
 
 
 	// ClientConnection object representing the camera uploading video
@@ -50,9 +50,6 @@ function CameraGroup(newGroupId, cameraSock){
 		if(isCamera) onCameraMessage(signal);
 		else onViewerMessage(signal);
 	};
-
-	eventEmitter.on("disconnect", disconnectCameraGroup);
-
 	
 };
 
