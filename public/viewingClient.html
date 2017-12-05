@@ -11,10 +11,17 @@
   </head>
   
   <body style="display: flex; justify-content: center; align-items: center;">
-  	CameraId: <input id="connectionBox" name="connectionBox">
-	 <input id="startButton" type="button" class="btn btn-default" value = "connect">
-
-    <video id="remoteVideo" autoplay></video>
+  	<div class="row">
+  		<div class="col-md-12"><div>
+  			<div style="font-size: 40px;"> Camera Id: </div><input id="connectionBox" class="form-control" name="connectionBox">
+	 		<input id="startButton" type="button" class="btn btn-default btn-lg" value = "connect">
+	 	</div></div>
+	 </div>
+	<div class="row">
+		<div class="col-md-12">
+    		<video id="remoteVideo" autoplay></video>
+    	</div>
+    </div>
     <script>window.addEventListener("load", pageReady);</script>
   </body>
 </html>
