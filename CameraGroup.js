@@ -22,14 +22,12 @@ function CameraGroup(newGroupId, cameraSock){
 
 	this.onCameraMessage = function(message){
 		console.log(this.description() + ' received message from camera client');
-		broadcastToViewers(message);
+		sendMessageToViewer(message, message.viewerId);
 	};
 
-	this.sendMessageToViewer = function(message){
-		console.log(this.description() + ' broadcasting message to viewers');
-		viewingClients.foreach(function(item,index,array){
-			item.sendMessage(message);
-		});
+	this.sendMessageToViewer = function(message,viewerId){
+		console.log(this.description() + ' sending message to viewing client ' + viewerId);
+		viewingClients.get(viewerId).send(message);
 	};
 	
 	this.onViewerMessage = function(message){
@@ -40,8 +38,9 @@ function CameraGroup(newGroupId, cameraSock){
 
 	this.onMessage = function(message, isCamera){
 		console.log(message);
-		if(isCamera) onCameraMessage(message);
-		else onViewerMessage(message);
+		var signal = JSON.parse(message);
+		if(isCamera) onCameraMessage(signal);
+		else onViewerMessage(signal);
 	};
 };
 

@@ -16,7 +16,7 @@ function ClientConnection(newGroupId, newParent, newWebSock){
 
 	// to do: add error handling, check for closed web sockets
 	this.sendMessage = function(message){
-		webSock.send(message);
+		webSock.send(JSON.stringify(message));
 	};
 };
 

@@ -47,18 +47,20 @@ wss.on('connection', function (client) {
 });
 
 var sendErrorToClient = function(client, err){
-	client.send({error: err});
+	client.send(JSON.stringify({error: err, connected: false}));
 };
 
 var invalidMessage = function(client){
-	sendErrorToClient(client, 'invalid initial message');
+	sendErrorToClient(client, 'invalid initial message format');
 };
 
 var connectCamera = function(groupId, client){
-	if(cameraGroups.has(groupId)) sendErrorToClient(client, ' camera group with id: ' + groupId + ' already exists');
-	else{
+	if(groupId == ' ' || groupId = '')
+		sendErrorToClient(client, 'invalid groupId');
+	else if(cameraGroups.has(groupId))
+		sendErrorToClient(client, ' camera group with id: ' + groupId + ' already exists');
+	else
 		cameraGroups.set(groupId, new CameraGroup(groupId, client));
-	}
 };
 
 var connectViewer = function(groupId, client){
@@ -69,11 +71,9 @@ var connectViewer = function(groupId, client){
 };
 
 var onFirstClientMessage = function(message, client){
-	var signal = JSON.parse(message);
-	console.log(signal);
-	console.log(message);
 	console.log('Initial message received from client');
 	if(!message.groupId || !message.clientType) invalidMessage(client);
-	else if(message.clientType == 'camera') connectCamera(message.groupId, client);
-	else if(message.clientType == 'viewer') connectViewer(message.groupId, client);
+	var signal = JSON.parse(message);
+	else if(signal.clientType == 'camera') connectCamera(signal.groupId, client);
+	else if(signal.clientType == 'viewer') connectViewer(signal.groupId, client);
 };
