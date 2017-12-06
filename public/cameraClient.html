@@ -32,7 +32,7 @@
    <script>
 	var pageReady = function(evt){
 		var client = new CameraClient();
-		client.pageReady();
+		CameraClient.prototype.pageReady.call(client);
 	};
 	window.addEventListener("load", pageReady);
    </script>
