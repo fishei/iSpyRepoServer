@@ -2,10 +2,10 @@
 function ClientBase(){
 	console.log(this);
 	var self = this;
-	this.localVideo = null;
-	this.startButton = null;
-	this.stopButton = null;
-	this.groupIdBox = null;
+	this.localVideo = document.getElementById("localVideo");
+	this.startButton = document.getElementById("startButton");
+	this.stopButton = document.getElementById("stopButton");
+	this.groupIdBox = document.getElementById("connectionBox");
 	this.wsc = new WebSocket('wss://ispyrevolution.com/websocket/');
 	this.peerConnectionConfig = {'iceServers': [
 		  {'url': 'stun:stun.services.mozilla.com'}
@@ -57,7 +57,11 @@ function ClientBase(){
 	this.onMessageWhileUnconnected = function(message){
 		console.log('unsolicted message received: ' + message);
 	};
-
+	
+	startButton.addEventListener("click",function(){
+		var gid = groupIdBox.value;
+		self.connectToGroup(gid);
+	};
 };
 
 	//message received with session description
@@ -75,19 +79,6 @@ ClientBase.prototype.getClientType = function(){
 };
 
 ClientBase.prototype.disconnectReceived = function(message){};
-
-ClientBase.prototype.pageReady = function(){
-		this.startButton = document.getElementById("startButton");
-		this.localVideo = document.getElementById("localVideo");
-		this.groupIdBox = document.getElementById("connectionBox");
-		self = this;
-		console.log(this);
-		console.log(self);
-		groupIdString = this.groupIdBox.value;
-		this.startButton.addEventListener("click", function(){
-			self.connectToGroup(groupIdString);
-		});
-};
 
 ClientBase.prototype.resetUIElements = function(){
 		this.startbutton.enabled = true;
