@@ -46,7 +46,7 @@ function ViewingClient(){
 ViewingClient.prototype = Object.create(ClientBase.prototype);
 ViewingClient.constructor = ViewingClient;
 
-ViewingClient.prototype.onICEMessage = function(message){
+ViewingClient.prototype.onIceMessage = function(message){
 	console.log('received ice candidate from remote peer');
 	this.peerConn.addIceCandidate(new RTCIceCandidate(message.candidate));
 };
@@ -64,7 +64,7 @@ ViewingClient.prototype.onAckReceived = function(signal){
 
 ViewingClient.prototype.onSDPMessage = function(message){
 	console.log('received SDP from remote peer');
-	this.peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp));
+	this.peerConn.setRemoteDescription(new RTCSessionDescription(message.sdp));
 };
 
 ViewingClient.onDisconnectMessage = function(message){

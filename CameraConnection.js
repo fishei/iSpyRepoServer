@@ -6,7 +6,6 @@ function CameraConnection(newGroupId, newParent, newWebSock){
 
 	// override this method in camera client objects
 	this.isCamera = function(){
-		console.log('TESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSST!@');
 		return true;
 	};
 };
