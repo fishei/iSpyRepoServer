@@ -53,7 +53,7 @@ CameraClient.prototype.pageReady() = function(){
 		function(stream){
 			console.log('retrieved local video stream');
 			localVideoStream = stream;
-			super.pageReady();
+			ClientBase.prototype.pageReady.call(this);
 			localVideo.src = URL.createObjectURL(localVideoStream);
 		},
 		function(error){
