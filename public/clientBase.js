@@ -23,7 +23,7 @@ function ClientBase(){
 		console.log('attempting to connect camera with groupId: ' + groupIdString);
 		if(this.wsc == null) console.log("NULL!!!!!");
 		console.log(this.wsc);
-		this.wsc.onmessage = function(){self.onInitialMessage();};
+		this.wsc.onmessage = function(evt){self.onInitialMessage(evt);};
 		this.wsc.send(JSON.stringify({"clientType": this.getClientType(),"groupId": groupIdString}));
 	};
 
@@ -79,7 +79,7 @@ function ClientBase(){
 	this.localDisconnect = function(){
 		this.wsc.send(JSON.stringify({"disconnect":"true"}));
 		this.resetUIElements();
-		this.wsc.onmessage = function(){self.onMessageWhileUnconnected();};
+		this.wsc.onmessage = function(evt){self.onMessageWhileUnconnected(evt);};
 	};
 
 	this.disconnectReceived = function(message){};
@@ -89,7 +89,7 @@ function ClientBase(){
 	};
 
 	this.onAckReceived = function(signal){
-		this.wsc.onmessage = function(){self.onMessage();};
+		this.wsc.onmessage = function(evt){self.onMessage(evt);};
 		window.addEventListener('beforeunload',onPageExit,false);
 	};
 
