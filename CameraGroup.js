@@ -46,7 +46,6 @@ function CameraGroup(newGroupId, cameraSock){
 	};
 
 	this.onMessage = function(message, isCamera){
-		console.log(message);
 		var signal = JSON.parse(message);
 		if(isCamera) this.onCameraMessage(signal);
 		else this.onViewerMessage(signal);

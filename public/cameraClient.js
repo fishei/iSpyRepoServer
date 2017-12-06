@@ -4,7 +4,7 @@ function CameraClient(){
 	ClientBase.call(this);
 
 	this.viewingPeers = new Map();
-
+	this.offersSent = new Map();
 	this.localVideoStream = null;
 
 	this.buildPeerConnection = function(i){
@@ -18,6 +18,7 @@ function CameraClient(){
 			}));
 		};
 		peerConn.addStream(this.localVideoStream);
+		this.offersSent.set(i,false);
 		return peerConn;
 	};
 
