@@ -35,7 +35,7 @@ function ClientBase(){
 	};
 	
 	this.onInitialMessage = function(evt){
-		var signal = JSON.parse(evt);
+		var signal = JSON.parse(evt.data);
 		if(signal.connected) this.onAckReceived(signal);
 		else if(signal.err) this.onConnectionFailure(signal.err);
 		else this.onConnectionFailure(signal.err);
