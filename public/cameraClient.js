@@ -100,7 +100,7 @@ CameraClient.prototype.onDisconnectMessage = function(message){
 	}
 };
 
-CameraClient.prototype.getClientType = function(){return 'camera';}
+CameraClient.prototype.getClientType = function(){return 'camera';};
 	
 
 
