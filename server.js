@@ -77,12 +77,12 @@ var connectViewer = function(groupId, client){
 		sendErrorToClient(client, ' camera group with id: ' + groupId + ' does not exist');
 };
 
+// value of 'this' will be a WebSocket in this function
 var onFirstClientMessage = function(message){
 	console.log('Initial message received from client');
 	var signal = JSON.parse(message);
-	console.log(this);
 	if((!signal.groupId) || (!signal.clientType)) invalidMessage(this);
 	else if(signal.clientType == 'camera')connectCamera(signal.groupId, this);
-	else if(signal.clientType == 'viewer') connectViewer(signal.groupId, client);
+	else if(signal.clientType == 'viewer') connectViewer(signal.groupId, this);
 	else sendErrorToClient(this, 'invalid client type');
 };
