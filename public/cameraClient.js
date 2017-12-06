@@ -53,10 +53,20 @@ function CameraClient(){
 			},
 			function(error){console.log(error);}
 		);
-	};
-	console.log(this);
-	console.log(this.prototype);
-	CameraClient.prototype.pageReady.call(this);				
+	};	
+	navigator.getUserMedia(
+		{"audio":false,"video":true},
+		function(stream){
+			console.log('retrieved local video stream');
+			localVideoStream = stream;
+			console.log(this);
+			localVideo.src = URL.createObjectURL(localVideoStream);
+		},
+		function(error){
+			console.log(error);
+			alert("your browser may not support webRTC");
+		}
+	);			
 };
 
 CameraClient.prototype = Object.create(ClientBase.prototype);
@@ -66,24 +76,6 @@ CameraClient.prototype.resetUIElements = function(){
 	startbutton.enabled = true;
 	stopbutton.enabled = false;
 	groupIdBox.value = '';
-};
-
-CameraClient.prototype.pageReady = function(){
-	console.log('camera client page ready');
-	navigator.getUserMedia(
-		{"audio":false,"video":true},
-		function(stream){
-			console.log('retrieved local video stream');
-			localVideoStream = stream;
-			console.log(this);
-			ClientBase.prototype.pageReady.call(this);
-			localVideo.src = URL.createObjectURL(localVideoStream);
-		},
-		function(error){
-			console.log(error);
-			alert("your browser may not support webRTC");
-		}
-	);
 };
 
 CameraClient.prototype.onIceMessage = function(message){
