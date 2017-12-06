@@ -11,11 +11,12 @@ CameraGroup.prototype.constructor=CameraGroup;
 function CameraGroup(newGroupId, cameraSock){
 	var groupId = newGroupId;
 	var viewingClients = new Map();
-	var nextViewerId = 0;
+	var nextViewerId = 1;
 
-
+	console.log('creating camera connection');
 	// ClientConnection object representing the camera uploading video
 	var cameraClient = new CameraConnection(groupId,this,cameraSock);
+	console.log('sending message to camera connection');
 	cameraClient.sendMessage({connected: true});
 
 	this.addViewer = function(viewerSock){

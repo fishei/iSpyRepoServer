@@ -95,6 +95,7 @@ ClientBase.prototype.resetUIElements = function(){
 };
 
 ClientBase.prototype.onAckReceived = function(signal){
+		console.log('received ack from server');
 		self = this;
 		this.wsc.onmessage = function(evt){self.onMessage(evt);};
 		window.addEventListener('beforeunload',this.onPageExit,false);

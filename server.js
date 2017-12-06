@@ -55,12 +55,17 @@ var invalidMessage = function(client){
 };
 
 var connectCamera = function(groupId, client){
+	console.log('attempting to connect camera');
 	if(groupId == ' ' || groupId == ''){
+		console.log('blank groupId');
 		sendErrorToClient(client, 'invalid groupId');
 	}else if(cameraGroups.has(groupId)){
+		console.log('groupId exists');
 		sendErrorToClient(client, ' camera group with id: ' + groupId + ' already exists');
 	}else{
+		console.log(cameraGroups);
 		cameraGroups.set(groupId, new CameraGroup(groupId, client));
+		console.log(cameraGroups);
 		cameraGroups.get(groupId).on('disconnect',function()
 			{console.log('sonny');}
 		);
