@@ -1,6 +1,5 @@
 
 function ClientBase(){
-	console.log(this);
 	var self = this;
 	this.localVideo = document.getElementById("localVideo");
 	this.startButton = document.getElementById("startButton");
@@ -15,15 +14,11 @@ function ClientBase(){
 			 	,'credential': 'a0ec22b8d37003895df189a49af2ac35'
 		  }
 	]};
-	console.log(this.wsc);
 	
 	this.connectToGroup = function(groupId){
-		console.log(this);
 		groupIdBox = document.getElementById('connectionBox');
 		groupIdString = groupIdBox.value;
 		console.log('attempting to connect camera with groupId: ' + groupIdString);
-		if(this.wsc == null) console.log("NULL!!!!!");
-		console.log(this.wsc);
 		this.wsc.onmessage = function(evt){self.onInitialMessage(evt);};
 		this.wsc.send(JSON.stringify({"clientType": this.getClientType(),"groupId": groupIdString}));
 	};
@@ -45,8 +40,6 @@ function ClientBase(){
 	this.onMessage = function(evt){
 		console.log('received message from server');
 		var signal = JSON.parse(evt.data);
-		console.log(evt.data);
-		console.log(signal);
 		if(signal.sdp) this.onSDPMessage(signal);
 		else if(signal.candidate) this.onIceMessage(signal);
 		else if(signal.disconnect) this.onDisconnectMessage(signal);
