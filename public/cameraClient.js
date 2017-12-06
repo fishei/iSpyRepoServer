@@ -24,7 +24,7 @@ function CameraClient(){
 
 	this.getPeerConnection = function(i){
 		if(!this.viewingPeers.has(i))
-			this.viewingPeers.set(i,buildPeerConnection(i));
+			this.viewingPeers.set(i,this.buildPeerConnection(i));
 		return viewingPeers.get(i);
 	};
 
