@@ -79,7 +79,7 @@ function ClientBase(){
 
 	this.onAckReceived = function(signal){
 		this.wsc.onmessage = function(evt){self.onMessage(evt);};
-		window.addEventListener('beforeunload',onPageExit,false);
+		window.addEventListener('beforeunload',this.onPageExit,false);
 	};
 
 	this.onMessageWhileUnconnected = function(message){
