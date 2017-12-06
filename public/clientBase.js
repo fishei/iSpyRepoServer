@@ -58,15 +58,6 @@ function ClientBase(){
 		else if(signal.disconnect) this.onDisconnectMessage(signal);
 		else console.log('invalid message format: ' + signal);
 	};
-
-	//message received with ice candidate
-	this.onIceMessage = function(message){};
-	
-	//message received with session description
-	this.onSDPMessage = function(message){};
-
-	//disconnect message received
-	this.onDisconnectMessage = function(message){};
 	
 	this.pageReady = function(){
 		this.startButton = document.getElementById('startButton');
@@ -82,8 +73,6 @@ function ClientBase(){
 		this.wsc.onmessage = function(evt){self.onMessageWhileUnconnected(evt);};
 	};
 
-	this.disconnectReceived = function(message){};
-
 	this.onPageExit = function(evt){
 		this.localDisconnect();
 	};
@@ -96,9 +85,41 @@ function ClientBase(){
 	this.onMessageWhileUnconnected = function(message){
 		console.log('unsolicted message received: ' + message);
 	};
-	
-	this.getClientType = function(){
-		return 'viewer';
-	};
 
 };
+
+	//message received with session description
+ClientBase.prototype.onSDPMessage = function(message){};
+
+	//disconnect message received
+ClientBase.prototype.onDisconnectMessage = function(message){};
+
+		//message received with ice candidate
+ClientBase.prototype.onIceMessage = function(message){};
+
+
+ClientBase.prototype.getClientType = function(){
+		return 'viewer';
+};
+
+ClientBase.prototype.disconnectReceived = function(message){};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
