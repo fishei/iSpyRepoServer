@@ -54,7 +54,9 @@ function CameraClient(){
 			function(error){console.log(error);}
 		);
 	};
-						
+	console.log(this);
+	console.log(this.prototype);
+	CameraClient.prototype.pageReady.call(this);				
 };
 
 CameraClient.prototype = Object.create(ClientBase.prototype);
@@ -73,6 +75,7 @@ CameraClient.prototype.pageReady = function(){
 		function(stream){
 			console.log('retrieved local video stream');
 			localVideoStream = stream;
+			console.log(this);
 			ClientBase.prototype.pageReady.call(this);
 			localVideo.src = URL.createObjectURL(localVideoStream);
 		},

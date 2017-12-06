@@ -1,5 +1,6 @@
 
 function ClientBase(){
+	console.log(this);
 	var self = this;
 	this.localVideo = null;
 	this.startButton = null;
