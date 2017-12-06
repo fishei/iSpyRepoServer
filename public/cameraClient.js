@@ -1,5 +1,6 @@
 
 function CameraClient(){
+	var self = this;
 	ClientBase.call(this);
 
 	this.viewingPeers = new Map();
@@ -16,7 +17,7 @@ function CameraClient(){
 				"viewerId":i
 			}));
 		};
-		peerConn.addStream(localVideoStream);
+		peerConn.addStream(this.localVideoStream);
 	};
 
 	/* create RTCPeerConnection for viewer i if it does not exist
@@ -25,7 +26,7 @@ function CameraClient(){
 	this.getPeerConnection = function(i){
 		if(!this.viewingPeers.has(i))
 			this.viewingPeers.set(i,this.buildPeerConnection(i));
-		return viewingPeers.get(i);
+		return this.viewingPeers.get(i);
 	};
 
 	this.checkMessageForId = function(message){
@@ -43,7 +44,7 @@ function CameraClient(){
 				this.getPeerConnection(viewerId).setLocalDescription(
 					new RTCSessionDescription(ans),
 					function(){
-						this.wsc.send(JSON.stringify({
+						self.wsc.send(JSON.stringify({
 							"sdp":ans,
 							"viewerId": viewerId
 						}));
@@ -54,7 +55,6 @@ function CameraClient(){
 			function(error){console.log(error);}
 		);
 	};	
-	var self = this;
 	navigator.getUserMedia(
 		{"audio":false,"video":true},
 		function(stream){
