@@ -25,9 +25,7 @@ var webSocketServerOpts = {
 }
 
 
-var express = require('express');
-var app = express();
-//Middleware
+
 app.listen(3000)
 
 // set up plain http server
