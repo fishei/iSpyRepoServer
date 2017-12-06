@@ -46,13 +46,14 @@ CameraClient.prototype.resetUIElements = function(){
 	groupIdBox.value = '';
 };
 
-CameraClient.prototype.pageReady = function(){
+CameraClient.prototype.pageReady() = function(){
+	console.log('camera client page ready');
 	navigator.getUserMedia(
 		{"audio":false,"video":true},
 		function(stream){
 			console.log('retrieved local video stream');
 			localVideoStream = stream;
-			ClientBase.prototype.pageReady.call(this);
+			super.pageReady();
 			localVideo.src = URL.createObjectURL(localVideoStream);
 		},
 		function(error){
@@ -72,19 +73,17 @@ CameraClient.prototype.onIceMessage = function(message){
 CameraClient.prototype.onSDPMessage = function(message){
 	if(this.checkMessageForId(message)){
 		console.log('received SDP from remote peer: ' + message.viewerId);
-		this.getPeerConnection(message.viewerId).setRemoteDescription(new RTCSessionDescription(signal.sdp));
+		this.getPeerConnection(message.viewerId).setRemoteDescription(new RTCSessionDescription(signal.sdp);
 		this.createAndSendAnswer(message.viewerId);
 	}
 };
 
-CameraClient.prototype.onDisconnectMessage = function(message){
+CameraClient.onDisconnectMessage = function(message){
 	if(this.checkMessageForId(message)){
 		getPeerConnection(message.viewerId).close();
 	}
 };
 
-CameraClient.prototype.getClientType = function(){
-	return 'camera';
-};
+	
 
 
