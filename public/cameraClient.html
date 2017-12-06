@@ -31,8 +31,9 @@
     </div>
    <script>
 	$(document).ready(function(){
+		console.log('test');
 		var client = new CameraClient();
-		client.pageReady.bind(client);
+		CameraClient.prototype.pageReady.bind(client);
 	});
    </script>
   
