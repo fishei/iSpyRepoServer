@@ -33,6 +33,13 @@ function ClientBase(){
 		alert(err);
 		this.resetUIElements();
 	};
+	
+	this.onInitialMessage = function(evt){
+		var signal = JSON.parse(evt);
+		if(signal.connected) this.onAckReceived(signal);
+		else if(signal.err) this.onConnectionFailure(signal.err);
+		else this.onConnectionFailure(signal.err);
+	};
 
 	//message received from server
 	this.onMessage = function(evt){
