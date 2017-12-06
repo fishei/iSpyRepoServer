@@ -100,6 +100,7 @@ CameraClient.onDisconnectMessage = function(message){
 	}
 };
 
+
 	
 
 
