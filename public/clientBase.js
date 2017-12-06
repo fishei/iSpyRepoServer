@@ -82,7 +82,7 @@ ClientBase.prototype.pageReady = function(){
 		self = this;
 		groupIdString = this.groupIdBox.value;
 		this.startButton.addEventListener("click", function(){
-			self.connectToGroup();
+			self.connectToGroup(groupIdString);
 		});
 };
 
