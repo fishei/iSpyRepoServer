@@ -25,8 +25,13 @@ var webSocketServerOpts = {
 }
 
 
+var express = require('express');
+var app = express();
+//Middleware
+app.listen(3000)
+
 // set up plain http server
-var forward = http.createServer();
+var forward = express.createServer();
 
 // set up a route to redirect http to https
 forward.get('*', function(req, res) {  
