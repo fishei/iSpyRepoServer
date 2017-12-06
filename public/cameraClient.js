@@ -94,13 +94,13 @@ CameraClient.prototype.onSDPMessage = function(message){
 	}
 };
 
-CameraClient.onDisconnectMessage = function(message){
+CameraClient.prototype.onDisconnectMessage = function(message){
 	if(this.checkMessageForId(message)){
 		getPeerConnection(message.viewerId).close();
 	}
 };
 
-
+CameraClient.prototype.getClientType = function(){return 'camera';}
 	
 
 
