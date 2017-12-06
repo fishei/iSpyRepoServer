@@ -61,7 +61,7 @@ function ClientBase(){
 	startButton.addEventListener("click",function(){
 		var gid = groupIdBox.value;
 		self.connectToGroup(gid);
-	};
+	});
 };
 
 	//message received with session description
