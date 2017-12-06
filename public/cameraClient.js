@@ -46,7 +46,7 @@ CameraClient.prototype.resetUIElements = function(){
 	groupIdBox.value = '';
 };
 
-CameraClient.prototype.pageReady() = function(){
+CameraClient.prototype.pageReady = function(){
 	console.log('camera client page ready');
 	navigator.getUserMedia(
 		{"audio":false,"video":true},
