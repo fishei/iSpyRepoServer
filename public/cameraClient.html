@@ -30,11 +30,10 @@
     	</div>
     </div>
    <script>
-	var pageReady = function(evt){
+	$(document).ready(function(){
 		var client = new CameraClient();
-		CameraClient.prototype.pageReady.call(client);
-	};
-	window.addEventListener("load", pageReady);
+		client.pageReady.bind(client);
+	});
    </script>
   
 
