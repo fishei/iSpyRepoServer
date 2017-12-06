@@ -97,7 +97,9 @@ ClientBase.prototype.getClientType = function(){
 ClientBase.prototype.disconnectReceived = function(message){};
 
 ClientBase.prototype.pageReady = function(){
+		console.log(this);
 		this.startButton = document.getElementById("startButton");
+		console.log(this.startButton);
 		this.localVideo = document.getElementById("localVideo");
 		this.startButton.addEventListener("click", function(){
 			self.connectToGroup();
