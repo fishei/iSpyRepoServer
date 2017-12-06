@@ -18,6 +18,7 @@ function CameraClient(){
 			}));
 		};
 		peerConn.addStream(this.localVideoStream);
+		return peerConn;
 	};
 
 	/* create RTCPeerConnection for viewer i if it does not exist
