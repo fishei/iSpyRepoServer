@@ -23,8 +23,8 @@ function CameraClient(){
 		return the RTCPeerConnection for viewer i */
 
 	this.getPeerConnection = function(i){
-		if(!viewingPeers.has(i))
-			viewingPeers.set(i,buildPeerConnection(i));
+		if(!this.viewingPeers.has(i))
+			this.viewingPeers.set(i,buildPeerConnection(i));
 		return viewingPeers.get(i);
 	};
 
@@ -74,9 +74,9 @@ CameraClient.prototype = Object.create(ClientBase.prototype);
 CameraClient.constructor = CameraClient;
 
 CameraClient.prototype.resetUIElements = function(){
-	startbutton.enabled = true;
-	stopbutton.enabled = false;
-	groupIdBox.value = '';
+	this.startbutton.enabled = true;
+	this.stopbutton.enabled = false;
+	this.groupIdBox.value = '';
 };
 
 CameraClient.prototype.onIceMessage = function(message){
@@ -96,7 +96,8 @@ CameraClient.prototype.onSDPMessage = function(message){
 
 CameraClient.prototype.onDisconnectMessage = function(message){
 	if(this.checkMessageForId(message)){
-		getPeerConnection(message.viewerId).close();
+		this.getPeerConnection(message.viewerId).close();
+		this.viewingPeers.delete(message.viewerId);
 	}
 };
 
