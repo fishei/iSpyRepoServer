@@ -80,6 +80,9 @@ ClientBase.prototype.pageReady = function(){
 		this.localVideo = document.getElementById("localVideo");
 		this.groupIdBox = document.getElementById("connectionBox");
 		self = this;
+		console.log(this);
+		console.log(self);
+		console.log(groupIdString);
 		groupIdString = this.groupIdBox.value;
 		this.startButton.addEventListener("click", function(){
 			self.connectToGroup(groupIdString);
