@@ -42,7 +42,7 @@ wss.on('connection', function (client) {
   	/** incomming message */
   	client.on('message', function (message) {
 		console.log('received message');
-   		onFirstClientMessage(message, client);
+   		onFirstClientMessage(message, client, connectCamera, connectViewer);
   	});
 });
 
@@ -74,13 +74,13 @@ var connectViewer = function(groupId, client){
 		sendErrorToClient(client, ' camera group with id: ' + groupId + ' does not exist');
 };
 
-var onFirstClientMessage = function(message, client){
+var onFirstClientMessage = function(message, client, cameraCallback, viewerCallback){
 	console.log('Initial message received from client');
 	var signal = JSON.parse(message);
 	console.log(signal);
 	console.log(signal.groupId);
 	console.log(signal.clientType);
 	if((!signal.groupId) || (!signal.clientType)) invalidMessage(client);
-	else if(signal.clientType == 'camera') connectCamera(signal.groupId, client);
-	else if(signal.clientType == 'viewer') connectViewer(signal.groupId, client);
+	else if(signal.clientType == 'camera'){ console.log('test'); cameraCallback(signal.groupId, client);}
+	else if(signal.clientType == 'viewer') viewerCallback(signal.groupId, client);
 };
