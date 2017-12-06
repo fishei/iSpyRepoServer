@@ -12,6 +12,7 @@ function CameraClient(){
 		peerConn.onicecandidate = function(evt){
 			console.log('received ice candidate for connection ' + i);
 			if(!evt || !evt.candidate) return;
+			console.log('sending ice candidate to remote peer ' + i);
 			self.wsc.send(JSON.stringify({
 				"candidate": evt.candidate, 
 				"viewerId":i
@@ -46,6 +47,7 @@ function CameraClient(){
 				self.getPeerConnection(viewerId).setLocalDescription(
 					new RTCSessionDescription(ans),
 					function(){
+						console.log('sending sdp answer to remote peer ' + viewerId);
 						self.wsc.send(JSON.stringify({
 							"sdp":ans,
 							"viewerId": viewerId

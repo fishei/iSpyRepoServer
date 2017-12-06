@@ -10,6 +10,7 @@ function ViewingClient(){
 		self = this;
 		this.peerConn.onIceCandidate = function(evt){
 			console.log('received ice candidate');
+			console.log('sending ice candidate to remote peer');
 			self.wsc.send(JSON.stringify({
 				"candidate": evt.candidate, 
 				"viewerId": self.viewerId
@@ -27,6 +28,7 @@ function ViewingClient(){
 				self.peerConn.setLocalDescription(
 					new RTCSessionDescription(off),
 					function(){
+						console.log('sending sdp offer to remote peer');
 						self.wsc.send(JSON.stringify({
 							"sdp":off, 
 							"viewerId": self.viewerId
@@ -43,6 +45,11 @@ function ViewingClient(){
 
 ViewingClient.prototype = Object.create(ClientBase.prototype);
 ViewingClient.constructor = ViewingClient;
+
+ViewingClient.prototype.onICEMessage = function(message){
+	console.log('received ice candidate from remote peer');
+	this.peerConn.addIceCandidate(new RTCIceCandidate(message.candidate));
+};
 
 ViewingClient.prototype.onAckReceived = function(signal){
 	if(!signal.viewerId) 
