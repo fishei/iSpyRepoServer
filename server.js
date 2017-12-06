@@ -40,10 +40,7 @@ console.log("WebSocketServer started");
 wss.on('connection', function (client) {
   	console.log("A new WebSocket client was connected.");
   	/** incomming message */
-  	client.on('message', function (message) {
-		console.log('received message');
-   		onFirstClientMessage(message, client, connectCamera, connectViewer);
-  	});
+  	client.on('message', onFirstClientMessage);
 });
 
 var sendErrorToClient = function(client, err){
@@ -63,9 +60,8 @@ var connectCamera = function(groupId, client){
 		console.log('groupId exists');
 		sendErrorToClient(client, ' camera group with id: ' + groupId + ' already exists');
 	}else{
-		console.log(cameraGroups);
+		client.removeEventListener('message', onFirstClientMessage);
 		cameraGroups.set(groupId, new CameraGroup(groupId, client));
-		console.log(cameraGroups);
 		cameraGroups.get(groupId).on('disconnect',function()
 			{console.log('sonny');}
 		);
@@ -73,19 +69,20 @@ var connectCamera = function(groupId, client){
 };
 
 var connectViewer = function(groupId, client){
-	if(cameraGroups.has(groupId))
+	if(cameraGroups.has(groupId)){
+		client.removeEventListener('message', onFirstClientMessage);
 		cameraGroups.get(groupId).addViewer(client);
+	}
 	else
 		sendErrorToClient(client, ' camera group with id: ' + groupId + ' does not exist');
 };
 
-var onFirstClientMessage = function(message, client, cameraCallback, viewerCallback){
+var onFirstClientMessage = function(message){
 	console.log('Initial message received from client');
 	var signal = JSON.parse(message);
-	console.log(signal);
-	console.log(signal.groupId);
-	console.log(signal.clientType);
-	if((!signal.groupId) || (!signal.clientType)) invalidMessage(client);
-	else if(signal.clientType == 'camera'){ console.log('test'); cameraCallback(signal.groupId, client);}
-	else if(signal.clientType == 'viewer') viewerCallback(signal.groupId, client);
+	console.log(this);
+	if((!signal.groupId) || (!signal.clientType)) invalidMessage(this);
+	else if(signal.clientType == 'camera')connectCamera(signal.groupId, this);
+	else if(signal.clientType == 'viewer') connectViewer(signal.groupId, client);
+	else sendErrorToClient(this, 'invalid client type');
 };
