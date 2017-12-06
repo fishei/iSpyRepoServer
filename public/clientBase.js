@@ -33,22 +33,6 @@ function ClientBase(){
 		this.resetUIElements();
 	};
 
-	this.resetUIElements = function(){
-		this.startbutton.enabled = true;
-		this.stopbutton.enabled = false;
-		this.groupIdBox.value = '';
-		this.localVideo.src = null;
-	};
-
-	this.onInitialMessage = function(evt){
-		console.log(this);
-		console.log('received initial response from server');
-		var signal = JSON.parse(evt.data);
-		if(signal.connected) this.onAckReceived(signal);
-		else if(signal.error) this.onConnectionFailure(signal.error);
-		else this.onConnectionFailure('invalid initial message:' + signal);
-	};
-
 	//message received from server
 	this.onMessage = function(evt){
 		console.log('received message from server');
@@ -67,11 +51,6 @@ function ClientBase(){
 
 	this.onPageExit = function(evt){
 		this.localDisconnect();
-	};
-
-	this.onAckReceived = function(signal){
-		this.wsc.onmessage = function(evt){self.onMessage(evt);};
-		window.addEventListener('beforeunload',this.onPageExit,false);
 	};
 
 	this.onMessageWhileUnconnected = function(message){
@@ -97,18 +76,25 @@ ClientBase.prototype.getClientType = function(){
 ClientBase.prototype.disconnectReceived = function(message){};
 
 ClientBase.prototype.pageReady = function(){
-		console.log(this);
 		this.startButton = document.getElementById("startButton");
-		console.log(this.startButton);
 		this.localVideo = document.getElementById("localVideo");
 		this.startButton.addEventListener("click", function(){
 			self.connectToGroup();
 		});
-	};
+};
 
+ClientBase.prototype.resetUIElements = function(){
+		this.startbutton.enabled = true;
+		this.stopbutton.enabled = false;
+		this.groupIdBox.value = '';
+		this.localVideo.src = null;
+};
 
-
-
+ClientBase.prototype.onAckReceived = function(signal){
+		self = this;
+		this.wsc.onmessage = function(evt){self.onMessage(evt);};
+		window.addEventListener('beforeunload',this.onPageExit,false);
+};
 
 
 

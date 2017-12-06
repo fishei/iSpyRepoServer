@@ -5,7 +5,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-  <head>
+  <head> 
+	 <script src="clientBase.js"></script>
     <script src="viewingClient.js"></script>
     <title>Camera Feed</title>
   </head>
@@ -19,7 +20,7 @@
 	 </div>
 	<div class="row-fluid">
 		<div class="col-md-12">
-    		<video id="remoteVideo" autoplay></video>
+    		<video id="localVideo" autoplay></video>
     	</div>
     </div>
 
@@ -28,6 +29,11 @@
     		<button type="button" class="btn btn-warning btn-lg disabled">Disconnect</button>
     	</div>
     </div>
-    <script>window.addEventListener("load", pageReady);</script>
+    <script>
+        window.addEventListener("load", function(evt){
+            client = new ViewingClient();
+				client.pageReady();
+        });
+    </script>
   </body>
 </html>

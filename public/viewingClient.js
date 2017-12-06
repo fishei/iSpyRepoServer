@@ -1,63 +1,67 @@
-var remoteVideo = null
-	,peerConnection = null
-	,remoteVideoStream = null
-	,wsc = new WebSocket('wss://ispyrevolution.com/websocket/')
-	,peerConnectionConfig = {'iceServers': 
-       [{'url': 'stun:stun.services.mozilla.com'}
-		, {'url': 'stun:stun.l.google.com:19302'}
-		, {	'url': 'turn:ispyrevolution.com'
-		  	  ,'username': 'root'
-			  ,'credential': 'a0ec22b8d37003895df189a49af2ac35'
-		  }
-	]};
+function ViewingClient(){
+	ClientBase.call(this);
+	
+	this.peerConn = null;
+	this.localVideoStream = null;
+	this.viewerId = null;
 
-function pageReady(){
-	remoteVideo = document.getElementById("remoteVideo");
-	peerConnection = new RTCPeerConnection(peerConnectionConfig);
-	peerConnection.onicecandidate = onIceCandidateHandler;
-	peerConnection.onaddstream = onAddStreamHandler;
-	wsc.onopen = createAndSendOffer;
+	this.initializePeerConnection = function(){
+		this.peerConn = new RTCPeerConnection(peerConnectionConfig);
+		self = this;
+		this.peerConn.onIceCandidate = function(evt){
+			console.log('received ice candidate');
+			self.wsc.send(JSON.stringify({
+				"candidate": evt.candidate, 
+				"viewerId": this.viewerId
+			}));
+		};
+		peerConn.onaddstream = function(evt){
+			localVideo.addStream(evt.stream);
+		};
+	};
+
+	this.createAndSendOffer = function(){
+		peerConnection.createOffer(
+			function(offer){
+				var off = new RTCSessionDescription(offer);
+				peerConnection.setLocalDescription(
+					new RTCSessionDescription(off),
+					function(){
+						wsc.send(JSON.stringify({
+							"sdp":off, 
+							"viewerId": this.viewerId
+						}));
+					},
+					function(error){console.log(error);}
+				);
+			},
+			function(error){console.log(error);},
+			{offerToReceiveVideo: 1}
+		);
+	};
 };
 
-function createAndSendOffer(){
-	peerConnection.createOffer(
-		function(offer){
-			var off = new RTCSessionDescription(offer);
-			peerConnection.setLocalDescription(new RTCSessionDescription(off),
-				function(){
-					wsc.send(JSON.stringify({"sdp":off}));
-				},
-				function(error){console.log(error);}
-			);
-		},
-		function(error){console.log(error);}
-	);
-};
+ViewingClient.prototype = Object.create(ClientBase.prototype);
+ViewingClient.constructor = ViewingClient;
 
-wsc.onmessage = function(evt){
-	var signal = JSON.parse(evt.data);
-	if(signal.sdp){
-		console.log("Received SDP from remote peer.");
-		peerConnection.setRemoteDescription(new RTCSessionDescription(signal.sdp));
+ViewingClient.prototype.onAckReceived = function(signal){
+	if(!signal.viewerId) 
+		console.log('ack received with no viewer id');
+	else{
+		ClientBase.prototype.onAckReceived.call(this,signal);
+		this.viewerId = signal.viewerId;
+		this.initializePeerConnection();
+		this.createAndSendOffer();
 	}
-	else if (signal.candidate) {
-		console.log("Received ICECandidate from remote peer.");
-		peerConn.addIceCandidate(new RTCIceCandidate(signal.candidate));
-	}
 };
 
-function onIceCandidateHandler(evt) {
-  console.log('received ice candidate');
-  if (!evt || !evt.candidate) return;
-  console.log('sending ice candidate to remote peer');
-  wsc.send(JSON.stringify({"candidate": evt.candidate }));
+ViewingClient.prototype.onSDPMessage = function(message){
+	console.log('received SDP from remote peer: ' + message.viewerId);
+	this.peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp));
 };
 
-function onAddStreamHandler(evt) { 
-	// set remote video stream as source for remote video HTML5 element
-	remoteVideo.src = URL.createObjectURL(evt.stream);
+ViewingClient.onDisconnectMessage = function(message){
+	this.resetUIElements();
+	this.peerConn.close();
+	this.peerConn = null;
 };
-
-window.addEventListener("beforeunload", function(e){
-   console.log("Test");
-}, false);

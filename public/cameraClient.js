@@ -11,7 +11,7 @@ function CameraClient(){
 		peerConn.onicecandidate = function(evt){
 			console.log('received ice candidate for connection ' + i);
 			if(!evt || !evt.candidate) return;
-			wsc.send(JSON.stringify({
+			self.wsc.send(JSON.stringify({
 				"candidate": evt.candidate, 
 				"viewerId":i
 			}));
@@ -35,6 +35,26 @@ function CameraClient(){
 			}
 		return true;
 	};
+
+	this.createAndSendAnswer = function(viewerId){
+		this.getPeerConnection(viewerId).createAnswer(
+			function(answer){
+				var ans = new RTCSessionDescription(answer);
+				this.getPeerConnection(viewerId).setLocalDescription(
+					new RTCSessionDescription(ans),
+					function(){
+						this.wsc.send(JSON.stringify({
+							"sdp":ans,
+							"viewerId", viewerId
+						}));
+					};
+					function(error){console.log(error);}
+				);
+			},
+			function(error){console.log(error);}
+		);
+	};
+						
 };
 
 CameraClient.prototype = Object.create(ClientBase.prototype);
