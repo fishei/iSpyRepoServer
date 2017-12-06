@@ -31,7 +31,7 @@ function CameraGroup(newGroupId, cameraSock){
 
 	this.onCameraMessage = function(message){
 		console.log(this.description() + ' received message from camera client');
-		sendMessageToViewer(message, message.viewerId);
+		this.sendMessageToViewer(message, message.viewerId);
 	};
 
 	this.sendMessageToViewer = function(message,viewerId){
@@ -48,8 +48,8 @@ function CameraGroup(newGroupId, cameraSock){
 	this.onMessage = function(message, isCamera){
 		console.log(message);
 		var signal = JSON.parse(message);
-		if(isCamera) onCameraMessage(signal);
-		else onViewerMessage(signal);
+		if(isCamera) this.onCameraMessage(signal);
+		else this.onViewerMessage(signal);
 	};
 	
 };

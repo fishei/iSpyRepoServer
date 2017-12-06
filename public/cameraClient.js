@@ -28,7 +28,7 @@ function CameraClient(){
 		return viewingPeers.get(i);
 	};
 
-	this.checkMessageForId = function(){
+	this.checkMessageForId = function(message){
 			if(!message.viewerId){
 				console.log('invalid message: no viewer id ' + message);
 				return false;
