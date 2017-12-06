@@ -82,7 +82,6 @@ ClientBase.prototype.pageReady = function(){
 		self = this;
 		console.log(this);
 		console.log(self);
-		console.log(groupIdString);
 		groupIdString = this.groupIdBox.value;
 		this.startButton.addEventListener("click", function(){
 			self.connectToGroup(groupIdString);
