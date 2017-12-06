@@ -90,7 +90,7 @@ CameraClient.prototype.onIceMessage = function(message){
 CameraClient.prototype.onSDPMessage = function(message){
 	if(this.checkMessageForId(message)){
 		console.log('received SDP from remote peer: ' + message.viewerId);
-		this.getPeerConnection(message.viewerId).setRemoteDescription(new RTCSessionDescription(signal.sdp));
+		this.getPeerConnection(message.viewerId).setRemoteDescription(new RTCSessionDescription(message.sdp));
 		this.createAndSendAnswer(message.viewerId);
 	}
 };
