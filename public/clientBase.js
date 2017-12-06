@@ -59,7 +59,7 @@ function ClientBase(){
 	};
 	
 	startButton.addEventListener("click",function(){
-		var gid = groupIdBox.value;
+		var gid = self.groupIdBox.value;
 		self.connectToGroup(gid);
 	});
 };
