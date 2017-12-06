@@ -52,7 +52,7 @@ function CameraClient(){
 				);
 			},
 			function(error){console.log(error);}
-		));
+		);
 	};
 						
 };
