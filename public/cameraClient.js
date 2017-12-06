@@ -45,7 +45,7 @@ function CameraClient(){
 					function(){
 						this.wsc.send(JSON.stringify({
 							"sdp":ans,
-							"viewerId", viewerId
+							"viewerId": viewerId
 						}));
 					};
 					function(error){console.log(error);}
