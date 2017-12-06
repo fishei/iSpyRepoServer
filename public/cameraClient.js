@@ -61,7 +61,7 @@ function CameraClient(){
 			console.log('retrieved local video stream');
 			self.localVideoStream = stream;
 			console.log(self);
-			self.localVideo.src = URL.createObjectURL(localVideoStream);
+			self.localVideo.src = URL.createObjectURL(self.localVideoStream);
 		},
 		function(error){
 			console.log(error);
