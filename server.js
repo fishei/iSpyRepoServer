@@ -31,15 +31,12 @@ var forward = express();
 var http_forward=http.createServer(forward).listen(80);
 
 // set up a route to redirect http to https
-http_forward.on('*', function(req, res) {  
+forward.on('/', function(req, res) {  
     res.redirect('https://' + req.headers.host + req.url);
 
     // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
     // res.redirect('https://example.com' + req.url);
 })
-
-// have it listen on 80
-forward.listen(80);
 
 /*
 	uncomment to run server on localhost without an ssl
