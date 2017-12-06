@@ -15,7 +15,7 @@ function ViewingClient(){
 				"viewerId": self.viewerId
 			}));
 		};
-		peerConn.onaddstream = function(evt){
+		this.peerConn.onaddstream = function(evt){
 			self.localVideo.addStream(evt.stream);
 		};
 	};
