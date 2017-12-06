@@ -83,7 +83,7 @@ CameraClient.prototype.resetUIElements = function(){
 CameraClient.prototype.onIceMessage = function(message){
 	if(this.checkMessageForId(message)){
 		console.log('received ICE Candidate from remote peer: ' + message.viewerId);
-		this.getPeerConnection(message.viewerId).addIceCandidate(new RTCIceCandidate(signal.candidate));
+		this.getPeerConnection(message.viewerId).addIceCandidate(new RTCIceCandidate(message.candidate));
 	}
 };
 
