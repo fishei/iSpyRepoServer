@@ -54,13 +54,14 @@ function CameraClient(){
 			function(error){console.log(error);}
 		);
 	};	
+	var self = this;
 	navigator.getUserMedia(
 		{"audio":false,"video":true},
 		function(stream){
 			console.log('retrieved local video stream');
-			localVideoStream = stream;
-			console.log(this);
-			localVideo.src = URL.createObjectURL(localVideoStream);
+			self.localVideoStream = stream;
+			console.log(self);
+			self.localVideo.src = URL.createObjectURL(localVideoStream);
 		},
 		function(error){
 			console.log(error);
