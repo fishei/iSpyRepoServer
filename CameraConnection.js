@@ -10,6 +10,7 @@ CameraConnection.prototype.constructor = CameraConnection;
 
 // override this method in camera client objects
 CameraConnection.prototype.isCamera = function(){
+	console.log('TESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSST!@');
 	return true;
 };
 
