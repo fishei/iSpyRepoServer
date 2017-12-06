@@ -10,8 +10,8 @@ function ClientBase(){
 		  {'url': 'stun:stun.services.mozilla.com'}
 		, {'url': 'stun:stun.l.google.com:19302'}
 		, {'url': 'turn:ispyrevolution.com'
-		  	  	,'username': 'root'
-			 	,'credential': 'a0ec22b8d37003895df189a49af2ac35'
+		  	  	,'username': 'duncan'
+			 	,'credential': 'thisisduncan'
 		  }
 	]};
 	
