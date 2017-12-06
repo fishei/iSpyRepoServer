@@ -17,7 +17,7 @@ function ViewingClient(){
 			}));
 		};
 		this.peerConn.onaddstream = function(evt){
-			self.localVideo.addStream(evt.stream);
+			self.localVideo.src = URL.createObjectURL(evt.stream);
 		};
 	};
 
