@@ -25,14 +25,13 @@ var webSocketServerOpts = {
 }
 
 
-
-app.listen(3000)
-
 // set up plain http server
-var forward = express.createServer();
+var forward = express();
+
+var http_forward=http.createServer(forward).listen(80);
 
 // set up a route to redirect http to https
-forward.get('*', function(req, res) {  
+http_forward.on('*', function(req, res) {  
     res.redirect('https://' + req.headers.host + req.url);
 
     // Or, if you don't want to automatically detect the domain name from the request header, you can hard code it:
