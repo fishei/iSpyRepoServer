@@ -18,10 +18,10 @@ function ClientConnection(newGroupId, newParent, newWebSock){
 	this.sendMessage = function(message){
 		webSock.send(JSON.stringify(message));
 	};
-};
 
-ClientConnection.prototype.onMessage = function(message){
-	parent.onMessage(message, this.isCamera());
+	this.onMessage = function(message){
+		parent.onMessage(message, this.isCamera());
+	};
 };
 
 module.exports = ClientConnection;
