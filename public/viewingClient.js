@@ -6,7 +6,7 @@ function ViewingClient(){
 	this.viewerId = null;
 
 	this.initializePeerConnection = function(){
-		this.peerConn = new RTCPeerConnection(peerConnectionConfig);
+		this.peerConn = new RTCPeerConnection(this.peerConnectionConfig);
 		self = this;
 		this.peerConn.onIceCandidate = function(evt){
 			console.log('received ice candidate');
@@ -16,18 +16,18 @@ function ViewingClient(){
 			}));
 		};
 		peerConn.onaddstream = function(evt){
-			localVideo.addStream(evt.stream);
+			self.localVideo.addStream(evt.stream);
 		};
 	};
 
 	this.createAndSendOffer = function(){
-		peerConnection.createOffer(
+		this.peerConn.createOffer(
 			function(offer){
 				var off = new RTCSessionDescription(offer);
-				peerConnection.setLocalDescription(
+				self.peerConn.setLocalDescription(
 					new RTCSessionDescription(off),
 					function(){
-						wsc.send(JSON.stringify({
+						self.wsc.send(JSON.stringify({
 							"sdp":off, 
 							"viewerId": this.viewerId
 						}));
