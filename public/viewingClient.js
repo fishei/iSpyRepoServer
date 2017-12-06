@@ -12,7 +12,7 @@ function ViewingClient(){
 			console.log('received ice candidate');
 			self.wsc.send(JSON.stringify({
 				"candidate": evt.candidate, 
-				"viewerId": this.viewerId
+				"viewerId": self.viewerId
 			}));
 		};
 		peerConn.onaddstream = function(evt){
@@ -29,7 +29,7 @@ function ViewingClient(){
 					function(){
 						self.wsc.send(JSON.stringify({
 							"sdp":off, 
-							"viewerId": this.viewerId
+							"viewerId": self.viewerId
 						}));
 					},
 					function(error){console.log(error);}
@@ -56,7 +56,7 @@ ViewingClient.prototype.onAckReceived = function(signal){
 };
 
 ViewingClient.prototype.onSDPMessage = function(message){
-	console.log('received SDP from remote peer: ' + message.viewerId);
+	console.log('received SDP from remote peer');
 	this.peerConn.setRemoteDescription(new RTCSessionDescription(signal.sdp));
 };
 

@@ -72,13 +72,13 @@ function ClientBase(){
 };
 
 	//message received with session description
-ClientBase.prototype.onSDPMessage = function(message){};
+ClientBase.prototype.onSDPMessage = function(message){console.log('error on sdp');};
 
 	//disconnect message received
-ClientBase.prototype.onDisconnectMessage = function(message){};
+ClientBase.prototype.onDisconnectMessage = function(message){console.log('disconnect');};
 
 		//message received with ice candidate
-ClientBase.prototype.onIceMessage = function(message){};
+ClientBase.prototype.onIceMessage = function(message){console.log('error on ice');};
 
 
 ClientBase.prototype.getClientType = function(){
