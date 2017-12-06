@@ -39,10 +39,10 @@ function CameraClient(){
 	};
 
 	this.createAndSendAnswer = function(viewerId){
-		this.getPeerConnection(viewerId).createAnswer(
+		self.getPeerConnection(viewerId).createAnswer(
 			function(answer){
 				var ans = new RTCSessionDescription(answer);
-				this.getPeerConnection(viewerId).setLocalDescription(
+				self.getPeerConnection(viewerId).setLocalDescription(
 					new RTCSessionDescription(ans),
 					function(){
 						self.wsc.send(JSON.stringify({
