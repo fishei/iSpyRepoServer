@@ -47,12 +47,12 @@ function CameraClient(){
 							"sdp":ans,
 							"viewerId": viewerId
 						}));
-					};
+					},
 					function(error){console.log(error);}
 				);
 			},
 			function(error){console.log(error);}
-		);
+		));
 	};
 						
 };
