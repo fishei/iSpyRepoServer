@@ -77,6 +77,9 @@ function record(stream, prefixName) {
 		video: true,
 		gif: false
   };
+  recordRTC.mimeType = {
+		video: 'video/mp4'
+	};
   recordRTC.startRecording();
   console.log(recordRTC);
   console.log(stream);
