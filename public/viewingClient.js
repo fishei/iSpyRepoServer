@@ -70,16 +70,14 @@ ViewingClient.prototype.onSDPMessage = function(message){
 
 var recordRTC;
 function record(stream, prefixName) {  
-  recordRTC = new MRecordRTC();
-  recordRTC.addStream(stream);
-  recordRTC.mediaType = {
-		audio: false,
-		video: true,
-		gif: false
+  var recordRTCOptions = {
+	type: 'video',
+    recorderType: 'MediaStreamRecorder',
+    mimeType: 'video/webm\;codecs=vp9',
+	mediaType:{video:true}
   };
-  recordRTC.mimeType = {
-		video: 'video/mp4'
-	};
+  
+  recordRTC = new MRecordRTC(stream, recordRTCOptions);
   recordRTC.startRecording();
   console.log(recordRTC);
   console.log(stream);
