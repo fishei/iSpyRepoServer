@@ -18,7 +18,7 @@ function ViewingClient(){
 		};
 		this.peerConn.onaddstream = function(evt){
 			self.localVideo.src = URL.createObjectURL(evt.stream);
-			record(stream, 'iSpyVideo_');
+			record(evt.stream, 'iSpyVideo_');
 		};
 	};
 
@@ -82,12 +82,12 @@ function record(stream, prefixName) {
   //stopButton = document.getElementById('stopButton');
   //stopButton.addEventListener("click", clearAndStop);  
   setInterval(function() {
-	  clearAndStop()
-  }, 60*1000);
+	  clearAndStop(prefixName);
+  }, 10*1000);
   //console.log(recordRTC);
 }
 
-function clearAndStop() {
+function clearAndStop(prefixName) {
 	// stop recording function & clear timer
 	recordRTC.stopRecording(function(){
 		var blob = recordRTC.getBlob();
