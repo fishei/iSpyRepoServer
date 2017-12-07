@@ -78,7 +78,6 @@ CameraClient.constructor = CameraClient;
 
 CameraClient.prototype.resetUIElements = function(){
 	this.startbutton.enabled = true;
-	this.stopbutton.enabled = false;
 	this.groupIdBox.value = '';
 };
 
@@ -97,12 +96,6 @@ CameraClient.prototype.onSDPMessage = function(message){
 	}
 };
 
-CameraClient.prototype.onDisconnectMessage = function(message){
-	if(this.checkMessageForId(message)){
-		this.getPeerConnection(message.viewerId).close();
-		this.viewingPeers.delete(message.viewerId);
-	}
-};
 
 CameraClient.prototype.getClientType = function(){return 'camera';};
 	

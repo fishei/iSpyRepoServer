@@ -66,9 +66,3 @@ ViewingClient.prototype.onSDPMessage = function(message){
 	console.log('received SDP from remote peer');
 	this.peerConn.setRemoteDescription(new RTCSessionDescription(message.sdp));
 };
-
-ViewingClient.onDisconnectMessage = function(message){
-	this.resetUIElements();
-	this.peerConn.close();
-	this.peerConn = null;
-};

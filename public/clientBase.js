@@ -82,7 +82,6 @@ ClientBase.prototype.disconnectReceived = function(message){};
 
 ClientBase.prototype.resetUIElements = function(){
 		this.startbutton.enabled = true;
-		this.stopbutton.enabled = false;
 		this.groupIdBox.value = '';
 		this.localVideo.src = null;
 };
