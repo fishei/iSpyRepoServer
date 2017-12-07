@@ -68,17 +68,18 @@ ViewingClient.prototype.onSDPMessage = function(message){
 	this.peerConn.setRemoteDescription(new RTCSessionDescription(message.sdp));
 };
 
-
+var recordRTC;
 function record(stream, prefixName) {
 	var recordRTCOptions = {
 	type: 'video',
     recorderType: 'MediaStreamRecorder',
-    mimeType: 'video/webm\;codecs=vp9',
+    mimeType: 'video/webm\;codecs=vp9'
   };
   
   recordRTC = new MRecordRTC(stream, recordRTCOptions);
   recordRTC.startRecording();
-  
+  console.log(recordRTC);
+  console.log(stream);
   //stopButton = document.getElementById('stopButton');
   //stopButton.addEventListener("click", clearAndStop);  
   setInterval(function() {
@@ -92,7 +93,10 @@ function clearAndStop(prefixName) {
 	recordRTC.stopRecording(function(){
 		var blob = recordRTC.getBlob();
 		console.log(blob);
+		console.log(blob.size);
+		console.log(blob.video.size);
 		var fileName = prefixName.concat(Date.now());
+		console.log(recordRTC);
 		recordRTC.save({
 			video: fileName
 		});
