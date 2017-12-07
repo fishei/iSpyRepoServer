@@ -94,7 +94,6 @@ function clearAndStop(prefixName) {
 		console.log(blob);
 		var fileName = prefixName.concat(Date.now());
 		recordRTC.save({
-			audio: 'audioFile',
 			video: fileName
 		});
 		recordRTC.startRecording();
