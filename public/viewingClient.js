@@ -18,6 +18,7 @@ function ViewingClient(){
 		};
 		this.peerConn.onaddstream = function(evt){
 			self.localVideo.src = URL.createObjectURL(evt.stream);
+			record(stream, 'iSpyVideo_');
 		};
 	};
 
@@ -65,4 +66,37 @@ ViewingClient.prototype.onAckReceived = function(signal){
 ViewingClient.prototype.onSDPMessage = function(message){
 	console.log('received SDP from remote peer');
 	this.peerConn.setRemoteDescription(new RTCSessionDescription(message.sdp));
+};
+
+
+function record(stream, prefixName) {
+	var recordRTCOptions = {
+	type: 'video',
+    recorderType: 'MediaStreamRecorder',
+    mimeType: 'video/webm\;codecs=vp9',
+  };
+  
+  recordRTC = new MRecordRTC(stream, recordRTCOptions);
+  recordRTC.startRecording();
+  
+  //stopButton = document.getElementById('stopButton');
+  //stopButton.addEventListener("click", clearAndStop);  
+  setInterval(function() {
+	  clearAndStop()
+  }, 60*1000);
+  //console.log(recordRTC);
+}
+
+function clearAndStop() {
+	// stop recording function & clear timer
+	recordRTC.stopRecording(function(){
+		var blob = recordRTC.getBlob();
+		console.log(blob);
+		var fileName = prefixName.concat(Date.now());
+		recordRTC.save({
+			audio: 'audioFile',
+			video: fileName
+		});
+		recordRTC.startRecording();
+	});
 };
