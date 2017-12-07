@@ -77,7 +77,8 @@ function record(stream, prefixName) {
 	mediaType:{video:true}
   };
   
-  recordRTC = new MRecordRTC(stream, recordRTCOptions);
+  recordRTC = new MRecordRTC(stream);
+  recordRTC.mediaType = {audio : false, video: true};
   recordRTC.startRecording();
   console.log(recordRTC);
   console.log(stream);
