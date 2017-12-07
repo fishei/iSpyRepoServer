@@ -91,7 +91,8 @@ function record(stream, prefixName) {
 
 function clearAndStop(prefixName) {
 	// stop recording function & clear timer
-	recordRTC.stopRecording(function(){
+	recordRTC.stopRecording(function(rec){
+		console.log(rec);
 		var blob = recordRTC.getBlob();
 		console.log(blob);
 		console.log(blob.size);
