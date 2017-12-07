@@ -8,7 +8,7 @@ function ViewingClient(){
 	this.initializePeerConnection = function(){
 		this.peerConn = new RTCPeerConnection(this.peerConnectionConfig);
 		self = this;
-		this.peerConn.onIceCandidate = function(evt){
+		this.peerConn.onicecandidate = function(evt){
 			console.log('received ice candidate');
 			console.log('sending ice candidate to remote peer');
 			self.wsc.send(JSON.stringify({
